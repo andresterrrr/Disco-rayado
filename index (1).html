@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d0f14">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png">
+<title>Disco Rayado · Prueba (v3)</title>
+<style>
+:root{--ink:#0d0f14;--panel:#161922;--panel2:#1f232d;--line:#2b303c;--text:#eef1f6;--dim:#8d96a7;--red:#f0475a;--blue:#4da3ff;--green:#2ed08b;--amber:#f2b63a}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--ink);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body{padding:max(10px,env(safe-area-inset-top)) max(14px,env(safe-area-inset-right)) 40px max(14px,env(safe-area-inset-left))}
+h1{font-size:20px;letter-spacing:-.02em}
+h2{font-size:15px;margin-bottom:8px}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:10px}
+.top img{width:36px;height:36px;border-radius:9px}
+.sub{font-size:12.5px;color:var(--dim);line-height:1.45}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(330px,1fr));gap:10px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:12px 14px}
+.row{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin-top:8px}
+button{font:inherit;font-weight:700;font-size:13.5px;color:#fff;border:none;border-radius:20px;padding:9px 15px;background:linear-gradient(100deg,var(--red),#b05cd6 55%,var(--blue));cursor:pointer}
+button.g{background:var(--panel2);border:1px solid var(--line);color:var(--text)}
+button:disabled{opacity:.4}
+input[type=text]{flex:1;min-width:150px;font:inherit;font-size:13.5px;color:var(--text);background:var(--ink);border:1px solid var(--line);border-radius:10px;padding:9px 11px}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px}
+.pill{font-size:12px;font-weight:700;padding:5px 10px;border-radius:12px;background:var(--panel2);border:1px solid var(--line);color:var(--dim)}
+.pill.ok{background:#12362b;border-color:#1d6a50;color:var(--green)}
+.pill.bad{background:#3a1820;border-color:#7a2a37;color:#f2a3ad}
+.pill.wait{background:#3a2f12;border-color:#7a6224;color:var(--amber)}
+#log{font:11.5px/1.5 ui-monospace,Menlo,Consolas,monospace;color:#b4bccb;max-height:230px;overflow:auto;white-space:pre-wrap;word-break:break-word}
+#log .e{color:#f2a3ad}#log .o{color:var(--green)}
+.dev{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 0;border-bottom:1px solid var(--line);font-size:13px}
+.big{font-size:22px;font-weight:800;letter-spacing:-.02em}
+label.ck{display:flex;gap:9px;align-items:flex-start;font-size:13px;line-height:1.4;padding:5px 0}
+label.ck input{margin-top:3px;width:17px;height:17px}
+#pause{position:fixed;inset:0;background:#05060af0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:14px;z-index:50;text-align:center}
+#pause.on{display:flex}
+textarea{width:100%;height:120px;background:var(--ink);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:8px;font:11.5px ui-monospace,monospace;margin-top:8px}
+code{background:var(--panel2);padding:1px 5px;border-radius:5px;font-size:12px;word-break:break-all}
+</style>
+</head>
+<body>
+<div class="top"><img src="icon-192.png" alt=""><div><h1>Disco Rayado · Versión de prueba v3</h1><div class="sub">Comprueba lo que no se puede saber sin probarlo en tu móvil. No es el juego.</div></div></div>
+
+<div class="pills" id="pills"></div>
+
+<div class="grid">
+
+<div class="card"><h2>1. Conexión con Spotify</h2>
+<div class="sub">Dirección de retorno (cópiala tal cual en el panel de Spotify):<br><code id="ruri"></code></div>
+<div class="row"><input type="text" id="cid" placeholder="Client ID de Spotify" autocomplete="off" autocapitalize="off" spellcheck="false"></div>
+<div class="row"><button id="bLogin">Conectar con Spotify</button><button class="g" id="bLogout">Desconectar</button></div>
+<div class="sub" id="who" style="margin-top:8px">Sin conectar.</div></div>
+
+<div class="card"><h2>2. Dispositivo de Spotify</h2>
+<div class="sub">Abre antes la app de Spotify en este móvil. Aquí debe aparecer tu móvil.</div>
+<div class="row"><button id="bDev">Ver dispositivos</button></div>
+<div id="devs" style="margin-top:6px"></div></div>
+
+<div class="card"><h2>3. Playlist</h2>
+<div class="row"><input type="text" id="pl" placeholder="URL de una playlist tuya" autocomplete="off" autocapitalize="off" spellcheck="false"><button id="bPl">Cargar</button></div>
+<div class="sub" id="plOut" style="margin-top:8px"></div></div>
+
+<div class="card"><h2>4. Canción a ciegas</h2>
+<div class="sub">Pone una canción al azar de la playlist, sin modo aleatorio y repitiendo la canción hasta que la pares.</div>
+<div class="row"><button id="bPlay">Reproducir canción</button><button class="g" id="bPa">Pausar</button><button class="g" id="bRe">Reanudar</button><button class="g" id="bRev">Desvelar</button></div>
+<div style="margin-top:8px" class="big" id="npTime">—</div>
+<div class="sub" id="npInfo">Sin canción.</div></div>
+
+<div class="card"><h2>4b. Diagnóstico de reproducción</h2>
+<div class="sub">Si la canción no arranca, prueba estos botones de uno en uno. Cada uno anota en el registro lo que responde Spotify y el estado a los 3 segundos.</div>
+<div class="row"><button class="g" id="dA">A. Canción fija</button><button class="g" id="dB">B. Primera de tu playlist</button><button class="g" id="dC">C. Con la playlist</button><button class="g" id="dD">D. Sin repetir ni aleatorio</button><button class="g" id="dE">E. Estado actual</button></div></div>
+<div class="card"><h2>5. Salir de la app y volver</h2>
+<label class="ck"><input type="checkbox" id="tPause" checked><span>Pausar Spotify al salir de la app y comprobar el estado al volver</span></label>
+<div class="sub">Con una canción sonando, sal de la app unos segundos (botón de inicio o cambia a otra app) y vuelve. Mira el registro de abajo.</div>
+<div class="sub" id="visOut" style="margin-top:6px"></div></div>
+
+<div class="card"><h2>6. Pantalla</h2>
+<div class="row"><button id="bFs">Pantalla completa + horizontal</button><button class="g" id="bWl">Mantener pantalla encendida</button></div>
+<div class="sub" id="scrOut" style="margin-top:8px"></div></div>
+
+<div class="card"><h2>7. Años (MusicBrainz)</h2>
+<div class="row"><input type="text" id="mbA" value="Nirvana"><input type="text" id="mbT" value="Smells Like Teen Spirit"></div>
+<div class="row"><button id="bMb">Buscar año</button></div>
+<div class="sub" id="mbOut" style="margin-top:8px"></div></div>
+
+<div class="card"><h2>8. Notificaciones (a mano)</h2>
+<div class="sub">Con Spotify sonando y esta app instalada y abierta, marca lo que veas:</div>
+<label class="ck"><input type="checkbox" data-k="n1"><span>La barra de notificaciones desaparece al abrir la app</span></label>
+<label class="ck"><input type="checkbox" data-k="n2"><span>No se ve el título de la canción en ningún sitio durante el turno a ciegas</span></label>
+<label class="ck"><input type="checkbox" data-k="n3"><span>Con "No molestar" activado tampoco aparece nada</span></label>
+<label class="ck"><input type="checkbox" data-k="n4"><span>Al volver de Spotify (login) se abre la app instalada y no el navegador</span></label></div>
+
+<div class="card" style="grid-column:1/-1"><h2>Registro e informe</h2>
+<div id="log"></div>
+<div class="row"><button id="bRep">Generar informe para copiar</button><button class="g" id="bClr">Borrar registro</button></div>
+<textarea id="rep" readonly placeholder="El informe aparecerá aquí. Cópialo y envíamelo."></textarea></div>
+
+</div>
+
+<div id="pause"><div class="big">Partida en pausa</div><div class="sub">Has salido de la app. La música se ha detenido.</div><button id="bCont">Continuar</button></div>
+
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}},del(k){try{localStorage.removeItem(k)}catch(e){}}};
+const SCOPES='user-read-playback-state user-modify-playback-state user-read-currently-playing playlist-read-private playlist-read-collaborative';
+const API='https://api.spotify.com/v1';
+const REDIRECT=location.origin+location.pathname.replace(/index\.html$/,'');
+let tok=null, dev=null, tracks=[], np=null, poll=null, wake=null, hiddenAt=0;
+const logs=[];
+
+// ---------- registro y comprobaciones ----------
+function log(m,c){const t=new Date().toLocaleTimeString('es-ES');logs.push(`[${t}] ${m}`);const d=document.createElement('div');if(c)d.className=c;d.textContent=`${t}  ${m}`;$('log').appendChild(d);$('log').scrollTop=1e9}
+const CHECKS=[['env','Entorno'],['login','Spotify'],['dev','Dispositivo'],['pl','Playlist'],['play','Reproducción'],['audio','Audio avanza'],['vis','Pausa al salir'],['fs','Pantalla completa'],['wake','Pantalla encendida'],['mb','MusicBrainz']];
+const state={};
+function setCheck(id,s,txt){state[id]={s,txt};render()}
+function render(){$('pills').innerHTML=CHECKS.map(([id,n])=>{const c=state[id]||{s:'',txt:''};return `<span class="pill ${c.s}">${n}${c.txt?': '+c.txt:''}</span>`}).join('')}
+function fmt(ms){ms=Math.max(0,ms|0);const s=Math.floor(ms/1000);return String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0')}
+
+// ---------- PKCE ----------
+const b64u=b=>btoa(String.fromCharCode(...new Uint8Array(b))).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+function rnd(n){const a=new Uint8Array(n);crypto.getRandomValues(a);return b64u(a)}
+async function sha256(s){return crypto.subtle.digest('SHA-256',new TextEncoder().encode(s))}
+async function login(){
+  const cid=$('cid').value.trim(); if(!cid){log('Falta el Client ID','e');return}
+  store.set('cid',cid);
+  const ver=rnd(64), st=rnd(16); store.set('ver',ver); store.set('st',st);
+  const ch=b64u(await sha256(ver));
+  const u='https://accounts.spotify.com/authorize?'+new URLSearchParams({client_id:cid,response_type:'code',redirect_uri:REDIRECT,scope:SCOPES,code_challenge_method:'S256',code_challenge:ch,state:st});
+  log('Abriendo el login de Spotify…'); location.href=u;
+}
+async function tokenReq(body){
+  const r=await fetch('https://accounts.spotify.com/api/token',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams(body)});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok) throw new Error((j.error||r.status)+': '+(j.error_description||''));
+  return j;
+}
+function saveTok(j){tok={a:j.access_token,r:j.refresh_token||(tok&&tok.r),e:Date.now()+(j.expires_in-60)*1000};store.set('tok',JSON.stringify(tok))}
+async function handleRedirect(){
+  const p=new URLSearchParams(location.search);
+  if(p.get('error')){log('Spotify devolvió un error: '+p.get('error'),'e');setCheck('login','bad','rechazado');history.replaceState({},'',REDIRECT);return}
+  const code=p.get('code'); if(!code)return;
+  history.replaceState({},'',REDIRECT);
+  if(p.get('state')!==store.get('st')){log('El estado no coincide (¿abierto en otro navegador?)','e');setCheck('login','bad','estado');return}
+  try{saveTok(await tokenReq({grant_type:'authorization_code',code,redirect_uri:REDIRECT,client_id:store.get('cid'),code_verifier:store.get('ver')}));log('Login correcto','o')}
+  catch(e){log('No se pudo obtener el token: '+e.message,'e');setCheck('login','bad','token')}
+}
+async function getTok(){
+  if(!tok)return null;
+  if(Date.now()>tok.e){
+    if(!tok.r)return null;
+    try{saveTok(await tokenReq({grant_type:'refresh_token',refresh_token:tok.r,client_id:store.get('cid')}));log('Token renovado','o')}
+    catch(e){log('No se pudo renovar el token: '+e.message,'e');tok=null;store.del('tok');setCheck('login','bad','caducado');return null}
+  }
+  return tok.a;
+}
+async function api(method,path,{query,body}={}){
+  const t=await getTok(); if(!t){return {status:0,data:null,err:'sin sesión'}}
+  const q=query?'?'+new URLSearchParams(query):'';
+  let r; try{r=await fetch(API+path+q,{method,headers:{Authorization:'Bearer '+t,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined})}
+  catch(e){return {status:0,data:null,err:'red: '+e.message}}
+  let data=null, raw=''; if(r.status!==204){try{raw=await r.text();data=JSON.parse(raw)}catch(e){}}
+  const err=r.ok?null:((data&&data.error&&(data.error.message||data.error.reason))||('HTTP '+r.status));
+  return {status:r.status,data,err,raw}
+}
+
+// ---------- 1. conexión ----------
+async function whoami(){
+  const r=await api('GET','/me');
+  if(r.status===200){$('who').textContent='Conectado como '+(r.data.display_name||r.data.id);setCheck('login','ok','conectado');log('Conectado como '+(r.data.display_name||r.data.id),'o')}
+  else{$('who').textContent='Sin conectar.';if(r.err&&tok){log('/me falló: '+r.err,'e');setCheck('login','bad',r.err)}}
+}
+
+// ---------- 2. dispositivos ----------
+async function devices(){
+  const r=await api('GET','/me/player/devices');
+  if(r.status!==200){log('Dispositivos: '+r.err,'e');setCheck('dev','bad',r.err);return}
+  const L=r.data.devices||[]; $('devs').innerHTML='';
+  if(!L.length){$('devs').innerHTML='<div class="sub">Spotify no ve ningún dispositivo. Abre la app de Spotify en este móvil, reproduce algo y vuelve a pulsar.</div>';setCheck('dev','bad','ninguno');log('Sin dispositivos','e');return}
+  L.forEach(d=>{const el=document.createElement('div');el.className='dev';el.innerHTML=`<span><b>${esc(d.name)}</b> · ${esc(d.type)}${d.is_active?' · activo':''}</span>`;const b=document.createElement('button');b.className='g';b.textContent=(dev&&dev.id===d.id)?'Elegido':'Usar este';b.onclick=()=>useDev(d);el.appendChild(b);$('devs').appendChild(el)});
+  const act=L.find(d=>d.is_active); log('Dispositivos: '+L.map(d=>d.name+' ('+d.type+(d.is_active?', activo':'')+')').join(' | '));
+  if(!dev){const ph=L.find(d=>/smartphone/i.test(d.type))||act; if(ph){useDev(ph,true)}}
+}
+async function useDev(d,silent){
+  dev=d; store.set('dev',JSON.stringify({id:d.id,name:d.name}));
+  const r=await api('PUT','/me/player',{body:{device_ids:[d.id],play:false}});
+  if(r.status===204||r.status===200){setCheck('dev','ok',d.name);log('Reproducción transferida a '+d.name,'o')}
+  else{setCheck('dev','wait',d.name);log('Transferencia: '+(r.err||r.status)+' (puede ser normal si no había nada sonando)')}
+  if(!silent) devices();
+}
+function esc(s){return String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]))}
+
+// ---------- 3. playlist ----------
+function plId(u){const m=u.match(/playlist[\/:]([A-Za-z0-9]+)/);return m?m[1]:null}
+const SUS_T=/remaster(ed)?|mono|stereo mix|version/i, SUS_A=/remaster|greatest hits|best of|collection|anthology|essential|gold|platinum|deluxe|expanded|anniversary|hits/i;
+const suspicious=t=>SUS_T.test(t.name)||SUS_A.test(t.album)||t.albumType==='compilation';
+async function loadPlaylist(){
+  const id=plId($('pl').value.trim()); if(!id){log('No reconozco la URL de la playlist','e');return}
+  store.set('pl',$('pl').value.trim()); $('plOut').textContent='Cargando…'; tracks=[];
+  let base='/playlists/'+id+'/items', url=null, off=0, tried=false;
+  for(;;){
+    let r=await api('GET',base,{query:{limit:50,offset:off,additional_types:'track'}});
+    if((r.status===404||r.status===400)&&!tried&&off===0){tried=true;log('/items no valió, pruebo /tracks');base='/playlists/'+id+'/tracks';r=await api('GET',base,{query:{limit:50,offset:off}})}
+    if(r.status!==200){log('Playlist: '+r.err,'e');setCheck('pl','bad',r.err);$('plOut').textContent='Error: '+r.err+'. Debe ser una playlist tuya o colaborativa.';return}
+    const items=r.data.items||[];
+    for(const it of items){const t=it.item||it.track; if(!t||t.is_local||(t.type&&t.type!=='track'))continue;
+      tracks.push({pid:id,uri:t.uri,name:t.name,artist:(t.artists||[]).map(a=>a.name).join(', '),album:(t.album&&t.album.name)||'',albumType:t.album&&t.album.album_type,year:parseInt(((t.album&&t.album.release_date)||'').slice(0,4))||null})}
+    $('plOut').textContent='Cargando… '+tracks.length+(r.data.total?' de '+r.data.total:'');
+    if(!r.data.next||!items.length)break; off+=50;
+  }
+  const ys=tracks.map(t=>t.year).filter(Boolean).sort((a,b)=>a-b);
+  const q=p=>ys[Math.min(ys.length-1,Math.floor(p*(ys.length-1)))];
+  const sus=tracks.filter(suspicious).length;
+  const s=`${tracks.length} canciones válidas · años ${ys[0]||'?'}–${ys[ys.length-1]||'?'} · rango P10–P90: ${ys.length?(q(.9)-q(.1)):'?'} años · posibles remasters: ${sus}`;
+  $('plOut').textContent=s; log('Playlist cargada: '+s,'o'); setCheck('pl',tracks.length?'ok':'bad',tracks.length+' canc.');
+  if(tracks.length){const ex=tracks.slice(0,3).map(t=>`${t.artist} – ${t.name} (${t.year})`).join(' | ');log('Ejemplos: '+ex)}
+}
+
+// ---------- 4. reproducción ----------
+async function playTest(){
+  if(!tracks.length){log('Carga primero una playlist','e');return}
+  if(!dev){log('Elige primero un dispositivo','e');return}
+  np=tracks[Math.floor(Math.random()*tracks.length)]; $('npInfo').textContent='Canción a ciegas: título y artista ocultos. Pulsa Desvelar para verlos.';
+  const q={device_id:dev.id};
+  // La app de Spotify en Android solo arranca la canción si se pide dentro de su playlist (context_uri + offset)
+  let r=await api('PUT','/me/player/play',{query:q,body:{context_uri:'spotify:playlist:'+np.pid,offset:{uri:np.uri}}});
+  if(r.status!==204&&r.status!==200){log('Play: '+r.err,'e');setCheck('play','bad',r.err);return}
+  setCheck('play','ok','suena'); log('Reproduciendo (a ciegas) · '+np.uri+' · respuesta '+r.status,'o'); startPoll();
+  setTimeout(async()=>{
+    const a=await api('PUT','/me/player/shuffle',{query:{state:'false',...q}}); log('shuffle off (después de arrancar) → '+(a.err||a.status));
+    const b=await api('PUT','/me/player/repeat',{query:{state:'track',...q}}); log('repeat track (después de arrancar) → '+(b.err||b.status));
+    setTimeout(()=>dump('Tras reproducir y repetir'),1500);
+  },1500);
+}
+function startPoll(){
+  clearInterval(poll); const t0=Date.now(); let first=null, ok=false;
+  poll=setInterval(async()=>{
+    const r=await api('GET','/me/player'); if(r.status!==200||!r.data){$('npTime').textContent='—';return}
+    const p=r.data.progress_ms, pl=r.data.is_playing; $('npTime').textContent=(pl?'▶ ':'⏸ ')+fmt(p);
+    if(first===null&&pl)first=p;
+    if(!ok&&first!==null&&p-first>1500){ok=true;setCheck('audio','ok','avanza');log('El audio avanza (progreso '+fmt(p)+')','o')}
+    if(!ok&&Date.now()-t0>6000&&!pl){setCheck('audio','bad','no avanza');log('Pasaron 6 s y no avanza: aquí saldría el botón de saltar','e');ok=true}
+  },1000);
+}
+async function reveal(){ if(!np){return} $('npInfo').textContent=`${np.artist} – ${np.name} · ${np.year}${suspicious(np)?' · sospechosa de remaster':''}`; }
+async function pausePl(){const r=await api('PUT','/me/player/pause',{query:dev?{device_id:dev.id}:{}});log('Pausa → '+(r.err||r.status),r.err?'e':'');return r}
+async function resumePl(){const r=await api('PUT','/me/player/play',{query:dev?{device_id:dev.id}:{}});log('Reanudar → '+(r.err||r.status),r.err?'e':'');return r}
+
+// ---------- diagnóstico ----------
+async function dump(tag){
+  const r=await api('GET','/me/player');
+  if(r.status!==200||!r.data){log(tag+' estado: HTTP '+r.status+' (sin datos de reproducción)','e');return}
+  const d=r.data,it=d.item||{};
+  log(`${tag} estado: playing=${d.is_playing} · progreso=${d.progress_ms} · dispositivo=${d.device&&d.device.name} (restringido=${d.device&&d.device.is_restricted}, volumen=${d.device&&d.device.volume_percent}) · canción=${it.uri||'ninguna'} · repetir=${d.repeat_state} · aleatorio=${d.shuffle_state} · no permitido=${JSON.stringify((d.actions&&d.actions.disallows)||{})}`)
+}
+async function diagPlay(label,body,pre){
+  if(!dev){log('Elige primero un dispositivo','e');return}
+  const q={device_id:dev.id};
+  if(pre){let r=await api('PUT','/me/player/shuffle',{query:{state:'false',...q}});log(label+' · shuffle → '+(r.err||r.status));r=await api('PUT','/me/player/repeat',{query:{state:'track',...q}});log(label+' · repeat → '+(r.err||r.status))}
+  log(label+' · enviando '+JSON.stringify(body));
+  const r=await api('PUT','/me/player/play',{query:q,body});
+  log(label+' · respuesta play: '+r.status+(r.err?' '+r.err:'')+(r.raw?' · '+r.raw.slice(0,200):''),r.err?'e':'');
+  setTimeout(()=>dump(label+' (3 s después)'),3000);
+}
+const FIXED='spotify:track:11dFghVXANMlKmJXsNCbNl';
+$('dA').onclick=()=>diagPlay('A canción fija',{uris:[FIXED]},false);
+$('dB').onclick=()=>{if(!tracks.length){log('Carga primero una playlist','e');return}const t=tracks[0];log('B usa: '+t.uri+' · '+t.name+' · '+t.artist);diagPlay('B primera de la playlist',{uris:[t.uri]},false)};
+$('dC').onclick=()=>{const id=plId($('pl').value.trim());if(!id||!tracks.length){log('Carga primero una playlist','e');return}diagPlay('C con la playlist',{context_uri:'spotify:playlist:'+id,offset:{uri:tracks[0].uri}},false)};
+$('dD').onclick=()=>{if(!tracks.length){log('Carga primero una playlist','e');return}diagPlay('D sin repetir',{uris:[tracks[Math.floor(Math.random()*tracks.length)].uri]},false)};
+$('dE').onclick=()=>dump('E');
+
+// ---------- 5. salir y volver ----------
+document.addEventListener('visibilitychange',async()=>{
+  if(document.hidden){
+    hiddenAt=Date.now(); log('La app pasa a segundo plano');
+    if($('tPause').checked&&np){const r=await pausePl(); log('Pausa enviada al salir → '+(r.err||r.status)+' (si no llega, el móvil frenó la app)')}
+  }else{
+    const away=hiddenAt?Math.round((Date.now()-hiddenAt)/1000):0; log('Vuelves a la app tras '+away+' s');
+    if(wake===null&&store.get('wl')==='1')reqWake();
+    if($('tPause').checked&&np){
+      const r=await api('GET','/me/player');
+      if(r.status===200&&r.data){
+        if(r.data.is_playing){log('Spotify seguía sonando al volver: lo pauso ahora','e');await pausePl();setCheck('vis','wait','tarde')}
+        else{log('Spotify estaba en pausa: la pausa al salir funcionó','o');setCheck('vis','ok','funciona')}
+      }
+      $('visOut').textContent='Última salida: '+away+' s fuera.'; $('pause').classList.add('on');
+    }
+  }
+});
+$('bCont').onclick=async()=>{$('pause').classList.remove('on');await resumePl()};
+
+// ---------- 6. pantalla ----------
+function scr(){const o=[];o.push('Modo: '+(matchMedia('(display-mode: fullscreen)').matches?'pantalla completa':matchMedia('(display-mode: standalone)').matches?'app instalada':'navegador'));o.push('Orientación: '+((screen.orientation&&screen.orientation.type)||'?'));o.push('Pantalla encendida: '+(wake?'sí':'no'));$('scrOut').textContent=o.join(' · ')}
+async function fs(){
+  try{await document.documentElement.requestFullscreen({navigationUI:'hide'});log('Pantalla completa: sí','o')}catch(e){log('Pantalla completa: '+e.message,'e')}
+  try{await screen.orientation.lock('landscape');log('Bloqueo horizontal: sí','o');setCheck('fs','ok','horizontal')}catch(e){log('Bloqueo horizontal: '+e.message,'e');setCheck('fs',document.fullscreenElement?'wait':'bad',document.fullscreenElement?'sin bloqueo':'no')}
+  scr();
+}
+async function reqWake(){try{wake=await navigator.wakeLock.request('screen');wake.addEventListener('release',()=>{wake=null;scr();log('Se liberó la pantalla encendida')});store.set('wl','1');setCheck('wake','ok','activa');log('Pantalla encendida: activa','o')}catch(e){setCheck('wake','bad','no');log('Wake Lock: '+e.message,'e')}scr()}
+
+// ---------- 7. MusicBrainz ----------
+async function mb(){
+  const a=$('mbA').value.trim(),t=$('mbT').value.trim(); $('mbOut').textContent='Consultando…';
+  try{
+    const r=await fetch('https://musicbrainz.org/ws/2/recording/?fmt=json&limit=15&query='+encodeURIComponent(`recording:"${t}" AND artist:"${a}"`));
+    if(!r.ok)throw new Error('HTTP '+r.status);
+    const j=await r.json(); const norm=s=>s.toLowerCase().replace(/\(.*?\)|\[.*?\]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
+    const bad=/live|demo|instrumental|karaoke/i; const ok=(j.recordings||[]).filter(x=>!bad.test(x.title)&&!bad.test(x.disambiguation||'')&&norm(x.title)===norm(t)&&(x['artist-credit']||[]).some(c=>norm(c.name||'').includes(norm(a)))&&x['first-release-date']);
+    const ys=ok.map(x=>parseInt(x['first-release-date'].slice(0,4))).filter(Boolean).sort((x,y)=>x-y);
+    const s=ys.length?`Año más antiguo: ${ys[0]} (${ok.length} coincidencias)`:'Sin coincidencias claras';
+    $('mbOut').textContent='Funciona desde el navegador. '+s; setCheck('mb','ok',ys.length?String(ys[0]):'sin datos'); log('MusicBrainz OK: '+s,'o');
+  }catch(e){$('mbOut').textContent='No se pudo consultar: '+e.message+'. Probablemente el navegador lo bloquea (CORS); haría falta un pequeño intermediario.';setCheck('mb','bad','bloqueado');log('MusicBrainz: '+e.message,'e')}
+}
+
+// ---------- informe ----------
+function report(){
+  const L=['DISCO RAYADO · INFORME DE PRUEBA',new Date().toLocaleString('es-ES'),'Navegador: '+navigator.userAgent,'Dirección: '+location.href.split('?')[0],'Modo de pantalla: '+$('scrOut').textContent,'','RESULTADOS:'];
+  CHECKS.forEach(([id,n])=>{const c=state[id];L.push(`- ${n}: ${c?c.s.toUpperCase()+(c.txt?' ('+c.txt+')':''):'sin probar'}`)});
+  L.push('','NOTIFICACIONES (a mano):');document.querySelectorAll('input[data-k]').forEach(i=>L.push(`- ${i.parentElement.textContent.trim()}: ${i.checked?'SÍ':'no'}`));
+  L.push('','REGISTRO:',...logs); $('rep').value=L.join('\n'); $('rep').select();
+  try{navigator.clipboard.writeText($('rep').value);log('Informe copiado')}catch(e){}
+}
+
+// ---------- arranque ----------
+$('ruri').textContent=REDIRECT;
+$('bLogin').onclick=login; $('bLogout').onclick=()=>{tok=null;store.del('tok');$('who').textContent='Sin conectar.';setCheck('login','','');log('Desconectado')};
+$('bDev').onclick=devices; $('bPl').onclick=loadPlaylist; $('bPlay').onclick=playTest; $('bPa').onclick=pausePl; $('bRe').onclick=resumePl; $('bRev').onclick=reveal;
+$('bFs').onclick=fs; $('bWl').onclick=reqWake; $('bMb').onclick=mb; $('bRep').onclick=report; $('bClr').onclick=()=>{$('log').innerHTML='';logs.length=0};
+document.querySelectorAll('input[data-k]').forEach(i=>{i.checked=store.get('ck_'+i.dataset.k)==='1';i.onchange=()=>store.set('ck_'+i.dataset.k,i.checked?'1':'0')});
+(async()=>{
+  $('cid').value=store.get('cid')||''; $('pl').value=store.get('pl')||'';
+  try{tok=JSON.parse(store.get('tok')||'null')}catch(e){tok=null}
+  try{dev=JSON.parse(store.get('dev')||'null')}catch(e){dev=null}
+  const standalone=matchMedia('(display-mode: standalone)').matches||matchMedia('(display-mode: fullscreen)').matches;
+  setCheck('env',location.protocol==='https:'?'ok':'bad',(location.protocol==='https:'?'https':'sin https')+(standalone?' · instalada':' · navegador'));
+  log('Navegador: '+navigator.userAgent); log('Dirección de retorno: '+REDIRECT);
+  if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(()=>{})}
+  await handleRedirect(); if(tok)await whoami(); scr(); render();
+})();
+</script>
+</body>
+</html>
