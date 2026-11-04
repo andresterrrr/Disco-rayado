@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#0d0f14">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
-<title>Disco Rayado · Prueba</title>
+<title>Disco Rayado · Prueba (v2)</title>
 <style>
 :root{--ink:#0d0f14;--panel:#161922;--panel2:#1f232d;--line:#2b303c;--text:#eef1f6;--dim:#8d96a7;--red:#f0475a;--blue:#4da3ff;--green:#2ed08b;--amber:#f2b63a}
 *{box-sizing:border-box;margin:0;padding:0}
@@ -42,7 +42,7 @@ code{background:var(--panel2);padding:1px 5px;border-radius:5px;font-size:12px;w
 </style>
 </head>
 <body>
-<div class="top"><img src="icon-192.png" alt=""><div><h1>Disco Rayado · Versión de prueba</h1><div class="sub">Comprueba lo que no se puede saber sin probarlo en tu móvil. No es el juego.</div></div></div>
+<div class="top"><img src="icon-192.png" alt=""><div><h1>Disco Rayado · Versión de prueba v2</h1><div class="sub">Comprueba lo que no se puede saber sin probarlo en tu móvil. No es el juego.</div></div></div>
 
 <div class="pills" id="pills"></div>
 
@@ -69,6 +69,9 @@ code{background:var(--panel2);padding:1px 5px;border-radius:5px;font-size:12px;w
 <div style="margin-top:8px" class="big" id="npTime">—</div>
 <div class="sub" id="npInfo">Sin canción.</div></div>
 
+<div class="card"><h2>4b. Diagnóstico de reproducción</h2>
+<div class="sub">Si la canción no arranca, prueba estos botones de uno en uno. Cada uno anota en el registro lo que responde Spotify y el estado a los 3 segundos.</div>
+<div class="row"><button class="g" id="dA">A. Canción fija</button><button class="g" id="dB">B. Primera de tu playlist</button><button class="g" id="dC">C. Con la playlist</button><button class="g" id="dD">D. Sin repetir ni aleatorio</button><button class="g" id="dE">E. Estado actual</button></div></div>
 <div class="card"><h2>5. Salir de la app y volver</h2>
 <label class="ck"><input type="checkbox" id="tPause" checked><span>Pausar Spotify al salir de la app y comprobar el estado al volver</span></label>
 <div class="sub">Con una canción sonando, sal de la app unos segundos (botón de inicio o cambia a otra app) y vuelve. Mira el registro de abajo.</div>
@@ -159,9 +162,9 @@ async function api(method,path,{query,body}={}){
   const q=query?'?'+new URLSearchParams(query):'';
   let r; try{r=await fetch(API+path+q,{method,headers:{Authorization:'Bearer '+t,...(body?{'Content-Type':'application/json'}:{})},body:body?JSON.stringify(body):undefined})}
   catch(e){return {status:0,data:null,err:'red: '+e.message}}
-  let data=null; if(r.status!==204){try{data=await r.json()}catch(e){}}
+  let data=null, raw=''; if(r.status!==204){try{raw=await r.text();data=JSON.parse(raw)}catch(e){}}
   const err=r.ok?null:((data&&data.error&&(data.error.message||data.error.reason))||('HTTP '+r.status));
-  return {status:r.status,data,err}
+  return {status:r.status,data,err,raw}
 }
 
 // ---------- 1. conexión ----------
@@ -226,7 +229,7 @@ async function playTest(){
   r=await api('PUT','/me/player/repeat',{query:{state:'track',...q}}); log('repeat track → '+(r.err||r.status));
   r=await api('PUT','/me/player/play',{query:q,body:{uris:[np.uri]}});
   if(r.status!==204&&r.status!==200){log('Play: '+r.err,'e');setCheck('play','bad',r.err);return}
-  setCheck('play','ok','suena'); log('Reproduciendo (a ciegas)','o'); startPoll();
+  setCheck('play','ok','suena'); log('Reproduciendo (a ciegas) · '+np.uri+' · respuesta '+r.status+(r.raw?' '+r.raw.slice(0,120):''),'o'); setTimeout(()=>dump('Tras reproducir (3 s)'),3000); startPoll();
 }
 function startPoll(){
   clearInterval(poll); const t0=Date.now(); let first=null, ok=false;
@@ -241,6 +244,29 @@ function startPoll(){
 async function reveal(){ if(!np){return} $('npInfo').textContent=`${np.artist} – ${np.name} · ${np.year}${suspicious(np)?' · sospechosa de remaster':''}`; }
 async function pausePl(){const r=await api('PUT','/me/player/pause',{query:dev?{device_id:dev.id}:{}});log('Pausa → '+(r.err||r.status),r.err?'e':'');return r}
 async function resumePl(){const r=await api('PUT','/me/player/play',{query:dev?{device_id:dev.id}:{}});log('Reanudar → '+(r.err||r.status),r.err?'e':'');return r}
+
+// ---------- diagnóstico ----------
+async function dump(tag){
+  const r=await api('GET','/me/player');
+  if(r.status!==200||!r.data){log(tag+' estado: HTTP '+r.status+' (sin datos de reproducción)','e');return}
+  const d=r.data,it=d.item||{};
+  log(`${tag} estado: playing=${d.is_playing} · progreso=${d.progress_ms} · dispositivo=${d.device&&d.device.name} (restringido=${d.device&&d.device.is_restricted}, volumen=${d.device&&d.device.volume_percent}) · canción=${it.uri||'ninguna'} · repetir=${d.repeat_state} · aleatorio=${d.shuffle_state} · no permitido=${JSON.stringify((d.actions&&d.actions.disallows)||{})}`)
+}
+async function diagPlay(label,body,pre){
+  if(!dev){log('Elige primero un dispositivo','e');return}
+  const q={device_id:dev.id};
+  if(pre){let r=await api('PUT','/me/player/shuffle',{query:{state:'false',...q}});log(label+' · shuffle → '+(r.err||r.status));r=await api('PUT','/me/player/repeat',{query:{state:'track',...q}});log(label+' · repeat → '+(r.err||r.status))}
+  log(label+' · enviando '+JSON.stringify(body));
+  const r=await api('PUT','/me/player/play',{query:q,body});
+  log(label+' · respuesta play: '+r.status+(r.err?' '+r.err:'')+(r.raw?' · '+r.raw.slice(0,200):''),r.err?'e':'');
+  setTimeout(()=>dump(label+' (3 s después)'),3000);
+}
+const FIXED='spotify:track:11dFghVXANMlKmJXsNCbNl';
+$('dA').onclick=()=>diagPlay('A canción fija',{uris:[FIXED]},false);
+$('dB').onclick=()=>{if(!tracks.length){log('Carga primero una playlist','e');return}const t=tracks[0];log('B usa: '+t.uri+' · '+t.name+' · '+t.artist);diagPlay('B primera de la playlist',{uris:[t.uri]},false)};
+$('dC').onclick=()=>{const id=plId($('pl').value.trim());if(!id||!tracks.length){log('Carga primero una playlist','e');return}diagPlay('C con la playlist',{context_uri:'spotify:playlist:'+id,offset:{uri:tracks[0].uri}},false)};
+$('dD').onclick=()=>{if(!tracks.length){log('Carga primero una playlist','e');return}diagPlay('D sin repetir',{uris:[tracks[Math.floor(Math.random()*tracks.length)].uri]},false)};
+$('dE').onclick=()=>dump('E');
 
 // ---------- 5. salir y volver ----------
 document.addEventListener('visibilitychange',async()=>{
