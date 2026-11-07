@@ -70,7 +70,7 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .chk b{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:.8rem}
 
 /* ====== Fase 2: estructura común de pantallas de partida ====== */
-#sRaffle,#sDeal,#sBlind,#sPlace,#sBoard,#sEnd,#sPre{flex-direction:column}
+#sRaffle,#sDeal,#sBlind,#sPlace,#sBoard,#sPre{flex-direction:column}
 .top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;min-height:2.4rem;flex:none}
 .who{flex:1;text-align:center;line-height:1.25;min-width:0}
 .who b{font-size:1.05rem}
@@ -179,9 +179,45 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .bubble{position:absolute;right:0;top:100%;margin-top:.2rem;display:none;gap:.5rem;padding:.55rem;background:var(--panel);border:1px solid var(--line);border-radius:1rem;z-index:6;flex-wrap:wrap;max-width:60%;justify-content:flex-end}
 .bubble.on{display:flex}
 
-/* fin provisional */
-#sEnd{align-items:center;justify-content:center;gap:.7rem;text-align:center}
-#enList{width:min(26rem,92%);text-align:left}
+/* ====== Fase 4: desempate y final ====== */
+#sEnd{flex-direction:row;gap:.9rem}
+#sEnd .side .foot{flex-direction:column;gap:.45rem}
+#enTitle{line-height:1.15;word-break:break-word}
+#enMain{position:relative;min-height:0;display:flex;flex-direction:column;gap:.3rem}
+#enMain svg{width:100%;height:100%;display:block}
+#enLegend{display:flex;flex-wrap:wrap;gap:.4rem;flex:none}
+button.chip{display:flex;align-items:center;gap:.35rem;padding:.25rem .65rem .25rem .3rem;font-size:.8rem;border-radius:2rem}
+button.chip.on{border-color:#fff}
+button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
+#enTrk{align-items:center}
+.sym{font-size:.72rem;color:var(--dim)}
+#sTie{flex-direction:column}
+#tiMid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;min-height:0;text-align:center}
+.tsong{display:flex;flex-direction:column;gap:.15rem;padding:.5rem 1.2rem;min-width:12rem;max-width:80%}
+.tsong .a{color:var(--dim);font-size:.85rem}.tsong .t{font-weight:800;font-size:1.1rem}
+.tnames{font-size:1.25rem;font-weight:800}
+#tiHold{position:relative;overflow:hidden;min-width:15rem}
+#tiHold i{position:absolute;left:0;top:0;bottom:0;width:0;background:#fff3;pointer-events:none}
+#tiHold span{position:relative}
+#yw{position:relative;width:min(34rem,94%)}
+.yptr{text-align:center;color:var(--amber);font-size:1.4rem;line-height:1}
+.ys{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;touch-action:pan-x;overscroll-behavior:contain;background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:.7rem 0}
+.ys::-webkit-scrollbar{display:none}
+.ysp{flex:none;width:calc(50% - 2.1rem)}
+.yi{flex:none;width:4.2rem;scroll-snap-align:center;text-align:center;font-weight:800;font-size:1.1rem;color:var(--dim);padding:.4rem 0;transition:transform .15s,color .15s}
+.yi.sel{color:#fff;transform:scale(1.4)}
+.ybig{font-size:2.4rem;font-weight:800;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.trow{display:flex;align-items:center;gap:.6rem;padding:.3rem .2rem;border-bottom:1px solid var(--line);text-align:left}
+.trow:last-child{border:none}
+.trow.win{color:var(--green);font-weight:800}
+#mFix .panel,#mEdit .panel{text-align:left}
+#fixList{max-height:55vh;overflow-y:auto;overscroll-behavior:contain;margin:.4rem 0}
+.frow{display:flex;align-items:center;gap:.6rem;padding:.4rem .2rem;border-bottom:1px solid var(--line);cursor:pointer}
+.frow .fy{font-weight:800;min-width:2.8rem;text-align:right}
+.frow .fm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.frow .fm small{color:var(--dim);display:block;overflow:hidden;text-overflow:ellipsis}
+.frow .fx{color:var(--amber);font-size:.7rem}
+#mEdit,#mFix,#mRev{z-index:55}
 
 /* turno a ciegas */
 .mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;min-height:0}
@@ -322,14 +358,34 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
   <div class="bot"><button class="g" id="bSwapB" style="display:none">Canjear fichas</button><button id="bBoardNext">Siguiente turno</button><div id="tkBox"></div></div>
 </div>
 
-<!-- Fin (provisional) -->
-<div id="sEnd" class="scr">
-  <div class="sub" id="enSub">Fin de la partida</div>
-  <h1 id="enTitle"></h1>
-  <div class="panel" id="enList"></div>
-  <div class="sub" id="enNote"></div>
-  <button id="bEndMenu">Menú</button>
+<!-- Desempate -->
+<div id="sTie" class="scr">
+  <div class="top"><div class="rem"><b>Desempate</b></div><div class="who" id="tiWho"></div><div style="min-width:9.5rem;text-align:right"><button class="g s" id="tiSkip" style="display:none">No suena: otra canción</button></div></div>
+  <div id="tiMid"></div>
 </div>
+
+<!-- Fin de la partida -->
+<div id="sEnd" class="scr">
+  <div class="side" style="width:31%">
+    <div class="sub" id="enSub"></div>
+    <h1 id="enTitle"></h1>
+    <div class="sub" id="enNote"></div>
+    <div class="foot">
+      <button class="g" id="bFixes">Corregir años</button>
+      <button id="bRevenge">Revancha</button>
+      <button class="g" id="bEndMenu">Menú</button>
+    </div>
+  </div>
+  <div class="panel grow col" style="min-width:0;gap:.4rem">
+    <div class="row" style="flex:none;min-height:1.6rem"><div class="sub grow" id="enHead"></div><button class="g s" id="enBack" style="display:none">Ver gráfica</button></div>
+    <div id="enMain" class="grow"></div>
+    <div id="enLegend"></div>
+  </div>
+</div>
+
+<div id="mFix" class="modal"><div class="panel"><h2>Corregir años</h2><div class="sub">Toca una canción para cambiar su año. El cambio se recuerda en las próximas partidas; esta partida sigue como terminó.</div><div id="fixList"></div><div class="row"><button id="fxClose">Cerrar</button></div></div></div>
+<div id="mEdit" class="modal"><div class="panel"><h2 id="edT"></h2><div class="sub" id="edS"></div><input type="text" id="edY" inputmode="numeric" maxlength="4" autocomplete="off" style="margin:.5rem 0"><div class="sub bad" id="edE"></div><div class="row"><button class="g" id="edRes">Restaurar</button><button class="g" id="edNo">Cancelar</button><button id="edOk">Guardar</button></div></div></div>
+<div id="mRev" class="modal"><div class="panel col" style="gap:.5rem"><h2>Revancha</h2><button id="rvSame">Mismos jugadores y temas</button><div class="sub">Las canciones que no sonaron salen primero. Fichas a 0.</div><button class="g" id="rvChg">Cambiar aspectos</button><div class="sub">Vuelves a los nombres y luego a las canciones.</div><button class="g" id="rvNo">Cancelar</button></div></div>
 
 <div id="mSwap" class="modal"><div id="swTxt"></div><div id="swStage"></div></div>
 <div id="mConfirm" class="modal"><div class="panel"><h2 id="mcT"></h2><div class="sub" id="mcB"></div><div class="row"><button class="g" id="mcNo">Cancelar</button><button id="mcYes">Aceptar</button></div></div></div>
@@ -404,7 +460,7 @@ async function api(method,path,{query,body}={},retry=true){
 
 // ================= Pantallas =================
 let cur=null;
-const GAME_SCREENS=['sRaffle','sDeal','sBlind','sPlace','sBoard','sPre'];
+const GAME_SCREENS=['sRaffle','sDeal','sBlind','sPlace','sBoard','sPre','sTie'];
 function show(id){
   document.querySelectorAll('.scr.on').forEach(s=>{if(s.id!==id){s.classList.remove('on')}});
   const e=$(id);e.classList.add('on');cur=id;
@@ -637,19 +693,23 @@ setInterval(()=>{if(cur==='sMusic'&&!document.hidden)devLoop()},8000);
 
 // ================= Mazo =================
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
-function buildGame(){
-  const names=pNames(),n=names.length,P=shuffle(pool());
+function buildGame(heard){
+  const names=pNames(),n=names.length,all=pool();
+  const yrs=all.map(t=>t.y);
+  const P=heard?shuffle(all.filter(t=>!heard.has(keyOf(t)))).concat(shuffle(all.filter(t=>heard.has(keyOf(t))))):shuffle(all);   // revancha: primero las que no sonaron
   const initial=P.slice(0,n),rest=P.slice(n);
   const reserveN=3+((rest.length-3)%n);
   const reserve=rest.slice(0,reserveN),deck=rest.slice(reserveN);
   const ini=initials(names);
-  return{players:names.map((nm,i)=>({name:nm,ini:ini[i],color:COLORS[i],tokens:0,board:[initial[i]]})),deck,reserve,deckTotal:deck.length,skips:0,first:null,turn:0,phase:'raffle',stat:{t:0,h:0},log:[],lastWarn:false,winner:null,res:null,hl:null,steal:null,spDone:false,saved:Date.now()};
+  return{players:names.map((nm,i)=>({name:nm,ini:ini[i],color:COLORS[i],tokens:0,board:[initial[i]]})),deck,reserve,deckTotal:deck.length,skips:0,first:null,turn:0,phase:'raffle',stat:{t:0,h:0},log:[],lastWarn:false,winner:null,res:null,hl:null,steal:null,spDone:false,failed:[],winners:null,how:null,tb:null,yr:[Math.min(...yrs),Math.max(...yrs)],saved:Date.now()};
 }
 function normGame(g){
   if(!g||!Array.isArray(g.players))return null;
   g.stat=g.stat||{t:0,h:0};g.log=g.log||[];g.deckTotal=g.deckTotal||g.deck.length;
   if(g.winner===undefined)g.winner=null;if(g.lastWarn===undefined)g.lastWarn=false;if(g.res===undefined)g.res=null;
   if(g.hl===undefined)g.hl=null;if(g.steal===undefined)g.steal=null;if(g.spDone===undefined)g.spDone=false;
+  if(!Array.isArray(g.failed))g.failed=[];if(g.winners===undefined)g.winners=null;if(g.how===undefined)g.how=null;if(g.tb===undefined)g.tb=null;
+  if(!g.yr){const ys=[].concat(...g.players.map(p=>p.board.filter(c=>!c.sp))).concat(g.reserve,g.failed).map(c=>c.y).filter(Boolean);g.yr=ys.length?[Math.min(...ys),Math.max(...ys)]:[1960,2020]}
   if(g.first===undefined||g.phase==='ready'||g.phase==='blind'){g.first=null;g.turn=0;g.phase='raffle'}
   return g;
 }
@@ -786,7 +846,7 @@ async function doSwap(from){
   P.tokens-=3;
   const c={...t,cj:true},idx=P.board.filter(x=>x.y<=c.y).length;
   P.board.splice(idx,0,c);
-  g.log.push({p:g.turn,ok:true,star:true,n:P.board.length});
+  g.log.push({p:g.turn,ok:true,star:true,n:P.board.length,r:Math.max(0,Math.floor((g.stat.t-(from==='pre'?0:1))/g.players.length))});
   if(P.board.length>=10)g.winner=g.turn;
   g.hl={p:g.turn,idx};saveGame();
   await swapAnimation(c);
@@ -966,7 +1026,8 @@ async function resolveTurn(s,bets){
   g.deck.shift();g.stat.t++;if(okTurn)g.stat.h++;
   if(owner===g.turn){idx=0;for(let i=0;i<s;i++)idx+=us[i].cards.length;P.board.splice(idx,0,t)}
   else if(owner>=0){const O=g.players[owner];idx=O.board.filter(x=>x.y<=t.y).length;O.board.splice(idx,0,t)}
-  g.log.push({p:g.turn,ok:okTurn,n:P.board.length,thief:(owner>=0&&owner!==g.turn)?owner:undefined,bets:bets.length||undefined});
+  g.log.push({p:g.turn,ok:okTurn,n:P.board.length,thief:(owner>=0&&owner!==g.turn)?owner:undefined,bets:bets.length||undefined,r:Math.floor((g.stat.t-1)/g.players.length)});
+  if(!okTurn)g.failed.push({...t,fp:g.turn});                    // canciones falladas: sirven para el desempate
   if(owner>=0&&g.players[owner].board.length>=10)g.winner=owner;
   g.res={p:g.turn,ok:okTurn,owner,idx,y:t.y,ask:okTurn&&g.winner===null};
   g.hl=owner>=0?{p:owner,idx}:null;g.steal=null;g.phase='result';saveGame();      // al confirmar se guarda
@@ -1065,7 +1126,7 @@ function nextTurn(){
   startTurn();
 }
 
-// ================= Final (provisional hasta la Fase 4) =================
+// ================= Final y desempate =================
 function endDeck(){
   const g=game;
   if(!g.spDone){                                       // cada 3 fichas sin canjear = una tarjeta «3 fichas» (cuenta como un punto)
@@ -1074,23 +1135,280 @@ function endDeck(){
   }
   g.phase='end';saveGame();showEnd();
 }
+const joinNames=a=>a.length<2?(a[0]||''):a.slice(0,-1).join(', ')+' y '+a[a.length-1];
+const colName=i=>`<span style="color:${game.players[i].color}">${esc(game.players[i].name)}</span>`;
 function showEnd(){
   const g=game;g.phase='end';saveGame();
   stopAudio(true);
-  const cards=g.players.map(p=>p.board.length);
-  let title,sub;
-  if(g.winner!==null){title=`<span style="color:${g.players[g.winner].color}">${esc(g.players[g.winner].name)}</span>`;sub='Gana la partida'}
-  else{
-    const mx=Math.max(...cards),ws=g.players.filter((p,i)=>cards[i]===mx);
-    sub='Se acabó el mazo';
-    title=ws.length===1?`Gana <span style="color:${ws[0].color}">${esc(ws[0].name)}</span>`:'Empate en cartas';
-    $('enNote').textContent=ws.length===1?'':'El desempate llegará en la Fase 4.';
+  if(!g.winners){
+    if(g.winner!==null){g.winners=[g.winner];g.how='ten'}
+    else if(g.tb){showTie();return}                    // desempate a medias
+    else{
+      const cards=g.players.map(p=>p.board.length),mx=Math.max(...cards),ws=cards.map((c,i)=>c===mx?i:-1).filter(i=>i>=0);
+      if(ws.length===1){g.winners=ws;g.how='cards'}
+      else{startTie(ws);return}
+    }
+    saveGame();
   }
-  if(g.winner!==null)$('enNote').textContent='';
-  $('enSub').textContent=sub;$('enTitle').innerHTML=title;
-  $('enList').innerHTML=g.players.map((p,i)=>`<div class="pl"><div class="dot" style="background:${p.color}">${esc(p.ini)}</div><div class="grow nm">${esc(p.name)}</div><div class="sub">${cards[i]} ${cards[i]===1?'carta':'cartas'}${p.board.some(c=>c.sp)?` (${p.board.filter(c=>c.sp).length} de fichas)`:''}</div></div>`).join('');
+  stopAudio(true);
+  const W=g.winners,one=W.length===1;
+  $('enSub').textContent=g.how==='cards'?'Se acabó el mazo':g.how==='tie'?'Desempate':g.how==='none'?'Empate':'Fin de la partida';
+  $('enTitle').innerHTML=(one?'Gana la partida<br>':'Ganan la partida<br>')+W.map(i=>colName(i)).join(W.length>2?', ':' y ');
+  const song=g.tb&&g.tb.song;
+  $('enNote').innerHTML=g.how==='cards'?'Gana quien tiene más cartas.':g.how==='tie'&&song?`La canción del desempate era «${esc(song.name)}» de ${esc(song.artist)}: ${song.y}.`:g.how==='none'?'No había canciones para desempatar: ganan todos los empatados.':'';
+  endView(-1);
   show('sEnd');
+  requestAnimationFrame(()=>endView(-1));
 }
+let endSel=-1;
+function endView(p){
+  const g=game;endSel=p;
+  $('enLegend').innerHTML=g.players.map((pl,i)=>{const c=pl.board.length;return `<button class="g chip ${i===p?'on':''}" data-p="${i}"><span class="dot" style="background:${pl.color}">${esc(pl.ini)}</span>${esc(pl.name)} · ${c}</button>`}).join('');
+  $('enLegend').querySelectorAll('.chip').forEach(b=>b.onclick=()=>endView(+b.dataset.p));
+  $('enBack').style.display=p>=0?'':'none';
+  if(p<0){
+    $('enHead').innerHTML='Cartas de cada jugador por ronda <span class="sym">· ✕ fallo · ★ canje · ⇄ robo</span>';
+    drawChart();
+  }else{
+    const P=g.players[p];
+    $('enHead').innerHTML=`Tablero final de <b style="color:${P.color}">${esc(P.name)}</b> <span class="sym">· toca una carta para corregir su año</span>`;
+    $('enMain').innerHTML='<div id="enTrk" class="track plain"></div>';
+    const t=$('enTrk');renderTrack(t,P.board,true);t.style.flex='1';
+    let flat=0;
+    units(P.board).forEach((u,k)=>{
+      const el=t.querySelectorAll('.unit')[k];
+      const cards=el.querySelectorAll('.card'),tabs=el.querySelectorAll('.tab');
+      if(cards[0])cards[0].dataset.ci=flat;
+      tabs.forEach((tb,j)=>tb.dataset.ci=flat+1+j);
+      flat+=u.cards.length;
+    });
+    t.onclick=e=>{const c=e.target.closest('[data-ci]');if(!c)return;const card=P.board[+c.dataset.ci];if(card&&!card.sp)openEdit(card)};
+  }
+}
+$('enBack').onclick=()=>endView(-1);
+
+// ---------- Gráfica ----------
+function chartData(){
+  const g=game,n=g.players.length,cnt=g.players.map(()=>1);
+  const pts=[cnt.slice()],marks=[];let tc=0;
+  g.log.forEach(e=>{
+    let r=e.r;if(r===undefined)r=Math.floor(tc/n);
+    if(!e.star)tc++;
+    const add=(p,k)=>marks.push({x:r+1,p,k});
+    if(e.star){cnt[e.p]++;add(e.p,'★')}
+    else if(e.ok){cnt[e.p]++}
+    else{add(e.p,'✕');if(e.thief!==undefined){cnt[e.thief]++;add(e.thief,'⇄')}}
+    while(pts.length<=r+1)pts.push(pts[pts.length-1].slice());
+    pts[r+1]=cnt.slice();
+  });
+  const fin=g.players.map(p=>p.board.length);
+  if(fin.join()!==pts[pts.length-1].join())pts.push(fin);
+  else if(pts.length===1)pts.push(fin);
+  return{pts,marks};
+}
+function drawChart(){
+  const g=game,n=g.players.length,{pts,marks}=chartData(),box=$('enMain');
+  const W=Math.max(200,box.clientWidth),H=Math.max(120,box.clientHeight);
+  const L=26,R=12,T=16,B=20,N=pts.length;
+  const ymax=Math.max(10,...pts.map(a=>Math.max(...a)));
+  const X=i=>L+(N<2?0:i/(N-1))*(W-L-R),Y=v=>H-B-(v/ymax)*(H-B-T);
+  let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cl"><rect id="clr" x="0" y="0" width="0" height="${H}"/></clipPath></defs>`;
+  [0,5,10].filter(v=>v<=ymax).forEach(v=>{s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#2b303c" stroke-width="1"/><text x="${L-5}" y="${Y(v)+4}" fill="#8d96a7" font-size="10" text-anchor="end">${v}</text>`});
+  const step=Math.max(1,Math.ceil(N/14));
+  for(let i=0;i<N;i++){if(i%step&&i!==N-1)continue;const lab=i===0?'Ini':(i===N-1&&pts[i].join()===g.players.map(p=>p.board.length).join()&&g.players.some(p=>p.board.some(c=>c.sp)))?'Fin':i;s+=`<text x="${X(i)}" y="${H-5}" fill="#8d96a7" font-size="10" text-anchor="middle">${lab}</text>`}
+  s+='<g clip-path="url(#cl)">';
+  g.players.forEach((p,k)=>{
+    const off=(k-(n-1)/2)*1.4;
+    s+=`<polyline fill="none" stroke="${p.color}" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round" points="${pts.map((a,i)=>X(i)+','+(Y(a[k])+off)).join(' ')}"/>`;
+    s+=pts.map((a,i)=>`<circle cx="${X(i)}" cy="${Y(a[k])+off}" r="2.6" fill="${p.color}"/>`).join('');
+  });
+  const stack={};
+  marks.forEach(m=>{
+    const x=Math.min(m.x,N-1),key=x+'|'+m.p,j=stack[key]=(stack[key]||0)+1;
+    const col=m.k==='✕'?'#f0475a':m.k==='★'?'#f2b63a':'#ffffff';
+    s+=`<text x="${X(x)}" y="${Y(pts[x][m.p])-6-(j-1)*11+(m.p-(n-1)/2)*1.4}" fill="${col}" font-size="11" font-weight="800" text-anchor="middle" stroke="#161922" stroke-width="2.5" paint-order="stroke">${m.k}</text>`;
+  });
+  s+='</g></svg>';
+  box.innerHTML=s;
+  const r=$('clr');r.style.transition='none';r.setAttribute('width','0');
+  void r.getBoundingClientRect();
+  r.style.transition='width '+Math.min(5,1.2+N*.25)+'s linear';
+  requestAnimationFrame(()=>r.setAttribute('width',W));
+}
+
+// ---------- Desempate ----------
+let tbSkipOk=false,tbWatch=null,tbTok=0;
+function tieOrder(tied){
+  const g=game,n=g.players.length,seq=[];
+  for(let k=0;k<n;k++)seq.push(((g.first||0)+k)%n);
+  return seq.reverse().filter(i=>tied.includes(i));       // orden contrario al de la partida
+}
+function pickTieSong(tied,tried){
+  const g=game,ok=t=>!tried.includes(keyOf(t)),rnd=a=>a[Math.floor(Math.random()*a.length)];
+  const res=g.reserve.filter(ok);                          // 1) reserva sin oír
+  if(res.length)return rnd(res);
+  const f=g.failed.filter(ok);                             // 2) fallada por un no empatado, ni de las primeras ni de las últimas
+  const mid=f.length>2?f.slice(1,-1):f;
+  const nt=mid.filter(t=>!tied.includes(t.fp));
+  if(nt.length)return rnd(nt);
+  if(f.length)return rnd(f);                               // 3) cualquier fallada
+  return null;
+}
+function startTie(tied){
+  const g=game,song=pickTieSong(tied,[]);
+  if(!song){g.winners=tied.slice();g.how='none';saveGame();showEnd();return}
+  g.tb={tied,order:tieOrder(tied),i:0,picks:[],song,tried:[keyOf(song)],stage:'intro'};
+  g.phase='tie';saveGame();showTie();
+}
+async function tiePlay(){
+  const g=game,tb=g.tb,my=++tbTok;
+  tbSkipOk=false;$('tiSkip').style.display='none';
+  const r=await playTrack(tb.song);
+  if(my!==tbTok)return;
+  if(!r.ok){tbSkipOk=true;$('tiSkip').style.display='';toast(r.msg||'No suena');return}
+  audioOn=true;manualPause=false;
+  clearTimeout(tbWatch);
+  tbWatch=setTimeout(async()=>{
+    if(my!==tbTok||!audioOn)return;
+    const s=await api('GET','/me/player');
+    const ok=s.status===200&&s.data&&s.data.is_playing&&s.data.progress_ms>1500&&s.data.item&&s.data.item.uri===tb.song.uri;
+    if(my===tbTok&&!ok&&audioOn){tbSkipOk=true;$('tiSkip').style.display=''}
+  },6000);
+}
+function tiSong(show){const t=game.tb.song;return `<div class="panel tsong"><div class="a">${esc(t.artist)}</div><div class="t">${esc(t.name)}</div>${show?`<div class="ybig" style="margin-top:.3rem">${t.y}</div>`:''}</div>`}
+function showTie(){
+  const g=game,tb=g.tb;g.phase='tie';saveGame();
+  show('sTie');
+  if(tb.stage==='intro'){renderTie();return}
+  if(tb.stage==='result'){renderTie();return}
+  tb.stage='pass';tiePlay();renderTie();                  // reanudar: vuelve a sonar la canción
+}
+function renderTie(){
+  const g=game,tb=g.tb,mid=$('tiMid');
+  $('tiWho').innerHTML='';
+  if(tb.stage==='intro'){
+    mid.innerHTML=`<div class="sub">Empate en cartas entre</div><div class="tnames">${tb.tied.map(i=>colName(i)).join(', ')}</div><div class="sub" style="max-width:28rem">Va a sonar una canción. Cada jugador empatado, en orden contrario al de la partida, elegirá en secreto un año con la rueda. Gana quien se acerque más.</div><button id="tiGo">Empezar desempate</button>`;
+    $('tiGo').onclick=()=>{tb.stage='pass';saveGame();tiePlay();renderTie()};
+    return;
+  }
+  if(tb.stage==='pass'){
+    const p=tb.order[tb.i],P=g.players[p];
+    $('tiWho').innerHTML=`<b>Jugador ${tb.i+1} de ${tb.order.length}</b>`;
+    mid.innerHTML=`${tiSong(false)}<div class="sub">Pasa el móvil a</div><div class="tnames" style="font-size:1.8rem;color:${P.color}">${esc(P.name)}</div><button id="tiHold"><i></i><span>Mantén pulsado para elegir año</span></button>`;
+    holdBtn($('tiHold'),800,()=>{tb.stage='pick';renderTie()});
+    return;
+  }
+  if(tb.stage==='pick'){
+    const p=tb.order[tb.i],P=g.players[p];
+    const lo=g.yr[0]-5,hi=Math.min(g.yr[1]+5,new Date().getFullYear());
+    $('tiWho').innerHTML=`<b style="color:${P.color}">${esc(P.name)}</b>`;
+    const ys=[];for(let y=lo;y<=hi;y++)ys.push(y);
+    mid.innerHTML=`${tiSong(false)}<div class="ybig" id="ywBig"></div><div id="yw"><div class="yptr">▼</div><div class="ys" id="ys"><i class="ysp"></i>${ys.map(y=>`<div class="yi" data-y="${y}">${y}</div>`).join('')}<i class="ysp"></i></div></div><div class="row"><button class="g s" id="ywM">−1</button><button id="ywOk" style="min-width:11rem">Confirmar año</button><button class="g s" id="ywP">+1</button></div>`;
+    const S=$('ys'),items=[...S.querySelectorAll('.yi')];
+    let sel=Math.round((items.length-1)/2);
+    const w=()=>items[0].offsetWidth;
+    const mark=()=>{const k=Math.max(0,Math.min(items.length-1,Math.round(S.scrollLeft/w())));if(k!==sel||!items[k].classList.contains('sel')){items.forEach((e,j)=>e.classList.toggle('sel',j===k));sel=k;$('ywBig').textContent=items[k].dataset.y}};
+    S.style.scrollSnapType='none';S.scrollLeft=sel*w();mark();
+    requestAnimationFrame(()=>{S.style.scrollSnapType='';mark()});
+    S.addEventListener('scroll',mark);
+    const go=d=>{sel=Math.max(0,Math.min(items.length-1,sel+d));S.scrollTo({left:sel*w(),behavior:'smooth'})};
+    $('ywM').onclick=()=>go(-1);$('ywP').onclick=()=>go(1);
+    $('ywOk').onclick=()=>{
+      const k=Math.max(0,Math.min(items.length-1,Math.round(S.scrollLeft/w())));
+      tb.picks.push({p,y:+items[k].dataset.y});tb.i++;
+      if(tb.i>=tb.order.length)tieResult();else{tb.stage='pass';saveGame();renderTie()}
+    };
+    return;
+  }
+  if(tb.stage==='result'){
+    const real=tb.song.y,rows=tb.picks.map(k=>({...k,d:Math.abs(real-k.y)})),best=Math.min(...rows.map(r=>r.d));
+    $('tiWho').innerHTML='<b>Resultado del desempate</b>';
+    mid.innerHTML=`${tiSong(true)}<div class="panel" style="min-width:16rem">${rows.map(r=>`<div class="trow ${r.d===best?'win':''}"><span class="dot" style="background:${g.players[r.p].color}">${esc(g.players[r.p].ini)}</span><span class="grow">${esc(g.players[r.p].name)}</span><span>${r.y}</span><span class="sub" style="min-width:4.5rem;text-align:right">${r.d===0?'exacto':'a '+r.d+(r.d===1?' año':' años')}</span></div>`).join('')}</div><button id="tiNext">Continuar</button>`;
+    $('tiNext').onclick=()=>{
+      g.winners=rows.filter(r=>r.d===best).map(r=>r.p);g.how=g.winners.length>1?'tie':'tie';saveGame();showEnd();
+    };
+  }
+}
+function tieResult(){
+  const tb=game.tb;tb.stage='result';saveGame();
+  tbTok++;clearTimeout(tbWatch);stopAudio(true);$('tiSkip').style.display='none';
+  renderTie();
+}
+function holdBtn(el,ms,cb){
+  const bar=el.querySelector('i');let t0=0,raf=0,done=false;
+  const stop=()=>{cancelAnimationFrame(raf);if(!done)bar.style.width='0'};
+  const tick=()=>{const f=Math.min(1,(performance.now()-t0)/ms);bar.style.width=f*100+'%';if(f>=1){done=true;cb();return}raf=requestAnimationFrame(tick)};
+  el.addEventListener('pointerdown',e=>{if(done)return;t0=performance.now();e.preventDefault();raf=requestAnimationFrame(tick)});
+  ['pointerup','pointerleave','pointercancel'].forEach(ev=>el.addEventListener(ev,stop));
+}
+$('tiSkip').onclick=()=>{
+  const g=game,tb=g.tb;if(!tbSkipOk)return;
+  confirmBox('¿Otra canción?','Solo si esta no suena. Se vuelve a empezar la ronda de años.',()=>{
+    const s=pickTieSong(tb.tied,tb.tried);
+    if(!s){g.winners=tb.tied.slice();g.how='none';saveGame();tbTok++;stopAudio(true);showEnd();return}
+    tb.song=s;tb.tried.push(keyOf(s));tb.picks=[];tb.i=0;tb.stage='pass';saveGame();tiePlay();renderTie();
+  });
+};
+
+// ---------- Corregir años ----------
+const curYear=()=>new Date().getFullYear();
+function gameSongs(){
+  const g=game,m=new Map();
+  const put=c=>{if(!c||c.sp||!c.artist)return;const k=keyOf(c);if(!m.has(k))m.set(k,c)};
+  g.players.forEach(p=>p.board.forEach(put));g.failed.forEach(put);if(g.tb&&g.tb.song)put(g.tb.song);
+  return [...m.values()].sort((a,b)=>a.y-b.y||a.artist.localeCompare(b.artist));
+}
+function openFix(){
+  const L=gameSongs();
+  $('fixList').innerHTML=L.map((c,i)=>`<div class="frow" data-i="${i}"><div class="fy">${c.y}</div><div class="fm">${esc(c.name)}<small>${esc(c.artist)}</small></div>${fixes[keyOf(c)]?'<div class="fx">corregido</div>':''}</div>`).join('');
+  $('fixList').querySelectorAll('.frow').forEach(r=>r.onclick=()=>openEdit(L[+r.dataset.i]));
+  $('mFix').classList.add('on');
+}
+let editCard=null;
+function openEdit(c){
+  editCard=c;const k=keyOf(c);
+  $('edT').textContent=c.name;$('edS').textContent=`${c.artist} · ahora: ${c.y}`+(fixes[k]?' (corregido a mano)':'');
+  $('edY').value=c.y;$('edE').textContent='';$('edRes').style.display=fixes[k]?'':'none';
+  $('mEdit').classList.add('on');
+}
+function applyYear(c,y){
+  const k=keyOf(c),all=[];
+  game.players.forEach(p=>p.board.forEach(x=>all.push(x)));game.failed.forEach(x=>all.push(x));all.push(...game.reserve);if(game.tb&&game.tb.song)all.push(game.tb.song);
+  all.forEach(x=>{if(!x.sp&&x.artist&&keyOf(x)===k)x.y=y});
+  saveGame();
+}
+$('edOk').onclick=()=>{
+  const y=parseInt($('edY').value.trim(),10);
+  if(!/^\d{4}$/.test($('edY').value.trim())||y<1900||y>curYear()){$('edE').textContent='Escribe un año de 4 cifras entre 1900 y '+curYear()+'.';return}
+  const k=keyOf(editCard);fixes[k]=y;store.set('dr_fix',JSON.stringify(fixes));
+  applyYear(editCard,y);$('mEdit').classList.remove('on');
+  toast('Año guardado: '+y+'. Se usará en las próximas partidas.');
+  refreshFinal();
+};
+$('edRes').onclick=()=>{
+  const k=keyOf(editCard);delete fixes[k];store.set('dr_fix',JSON.stringify(fixes));
+  applyYear(editCard,effYear(editCard)||editCard.y);$('mEdit').classList.remove('on');
+  toast('Año restaurado.');refreshFinal();
+};
+$('edNo').onclick=()=>$('mEdit').classList.remove('on');
+function refreshFinal(){if($('mFix').classList.contains('on'))openFix();if(cur==='sEnd')endView(endSel)}
+$('bFixes').onclick=openFix;
+$('fxClose').onclick=()=>$('mFix').classList.remove('on');
+
+// ---------- Revancha ----------
+$('bRevenge').onclick=()=>$('mRev').classList.add('on');
+$('rvNo').onclick=()=>$('mRev').classList.remove('on');
+$('rvChg').onclick=()=>{$('mRev').classList.remove('on');exitToMenu()};
+$('rvSame').onclick=async()=>{
+  $('rvSame').disabled=true;
+  const d=await checkDevice();$('rvSame').disabled=false;
+  if(!d.ok){toast(d.msg||'Abre Spotify');return}
+  $('mRev').classList.remove('on');
+  const heard=new Set(),old=game;
+  old.players.forEach(p=>p.board.forEach(c=>{if(!c.sp&&c.artist)heard.add(keyOf(c))}));old.failed.forEach(c=>heard.add(keyOf(c)));if(old.tb&&old.tb.song)heard.add(keyOf(old.tb.song));
+  tTok++;rfTok++;dealTok++;tbTok++;stopAudio(true);
+  game=buildGame(heard);game.phase='raffle';saveGame();showRaffle();
+};
 
 // ================= Engranaje =================
 function openGear(){
@@ -1125,6 +1443,7 @@ function resumeGame(){
     case 'place':case 'steal':startTurn(true);break;
     case 'result':case 'board':showBoard(g.res&&g.res.owner>=0?g.res.owner:g.turn);break;
     case 'end':showEnd();break;
+    case 'tie':showEnd();break;
     default:showRaffle();
   }
 }
@@ -1136,7 +1455,7 @@ setInterval(async()=>{
   if(r.status===200&&!(r.data.devices||[]).length)$('spWarn').classList.add('on');
   else $('spWarn').classList.remove('on');
 },10000);
-$('bSpRetry').onclick=async()=>{$('spWarn').classList.remove('on');if(np&&(cur==='sBlind'||cur==='sPlace')){const r=await playTrack(np);if(!r.ok)$('spWarn').classList.add('on');else audioOn=true}};
+$('bSpRetry').onclick=async()=>{$('spWarn').classList.remove('on');if(cur==='sTie'&&game&&game.tb&&game.tb.stage!=='intro'&&game.tb.stage!=='result'){const r=await playTrack(game.tb.song);if(!r.ok)$('spWarn').classList.add('on');else audioOn=true;return}if(np&&(cur==='sBlind'||cur==='sPlace')){const r=await playTrack(np);if(!r.ok)$('spWarn').classList.add('on');else audioOn=true}};
 
 // ================= Pausa al salir =================
 document.addEventListener('visibilitychange',async()=>{
