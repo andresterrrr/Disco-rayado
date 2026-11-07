@@ -624,10 +624,10 @@ function evalMusic(){
   const dv=deviceState;
   $('devT').innerHTML=dv.ok?`<span class="ok">Spotify listo: ${esc(dv.name)}</span>`:`<span class="warn">${esc(dv.msg||'Comprobando Spotify…')}</span>`;
   evalRes={n,need,have,level,range};
-  const blockDiv=level==='red'&&!ignoreDiv;
-  $('bIgnore').style.display=level==='red'&&have>=need?'block':'none';
+  const minTest=2*n+3,normalOk=have>=need&&level!=='red',canForce=have>=minTest;   // modo pruebas: vale con muy pocas canciones
+  $('bIgnore').style.display=(!normalOk&&canForce)?'block':'none';
   $('bIgnore').textContent=ignoreDiv?'Aviso ignorado (pruebas)':'Jugar igualmente (solo pruebas)';
-  $('bStart').disabled=!(have>=need&&!blockDiv&&dv.ok&&!mbBusy);
+  $('bStart').disabled=!((normalOk||(ignoreDiv&&canForce))&&dv.ok&&!mbBusy);
 }
 
 // ---------- MusicBrainz en segundo plano ----------
