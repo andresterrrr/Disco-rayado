@@ -288,9 +288,9 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
       <div class="prog" id="mbProg" style="display:none"><i></i></div>
       <div class="sub" id="mbT"></div>
       <div class="sub" id="devT" style="margin-top:.3rem"></div>
+      <button class="s" id="bIgnore" style="display:none;margin-top:.4rem;background:var(--amber);color:#0d0f14">Jugar igualmente (solo pruebas)</button>
     </div>
     <div class="foot"><button class="g" id="bMuBack">Atrás</button><button id="bStart" class="grow" disabled>Iniciar partida</button></div>
-    <button class="g s" id="bIgnore" style="display:none">Jugar igualmente (solo pruebas)</button>
   </div>
 </div>
 
@@ -626,7 +626,7 @@ function evalMusic(){
   evalRes={n,need,have,level,range};
   const minTest=2*n+3,normalOk=have>=need&&level!=='red',canForce=have>=minTest;   // modo pruebas: vale con muy pocas canciones
   $('bIgnore').style.display=(!normalOk&&canForce)?'block':'none';
-  $('bIgnore').textContent=ignoreDiv?'Aviso ignorado (pruebas)':'Jugar igualmente (solo pruebas)';
+  $('bIgnore').textContent=ignoreDiv?'Modo pruebas ACTIVADO: ya puedes iniciar':'Jugar igualmente (solo pruebas)';
   $('bStart').disabled=!((normalOk||(ignoreDiv&&canForce))&&dv.ok&&!mbBusy);
 }
 
