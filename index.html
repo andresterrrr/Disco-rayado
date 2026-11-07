@@ -99,6 +99,7 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .card.bad .cy{background:none;color:var(--red)}
 .mk{position:absolute;top:.2em;right:.35em;font-size:1.5em;font-weight:800;line-height:1.1}
 .card.ok .mk{color:var(--green)}.card.bad .mk{color:var(--red)}
+.card.ok .ca,.card.bad .ca{padding:0 1.4em}
 .era{font-size:1.15em;color:var(--text);line-height:1.3}
 .era b{display:block;font-size:2.2em;color:var(--red);font-weight:800;line-height:1.1}
 .cb{width:var(--cw);height:var(--ch);border-radius:.8rem;background:linear-gradient(160deg,#1f232d,#0d0f14);border:1.5px solid #3a3f52;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 .35rem #14171f}
@@ -443,7 +444,7 @@ function refreshPlayers(){
 // ================= Año de cada canción =================
 const keyOf=t=>{const n=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,' ').trim();return n(t.artist.split(',')[0])+'|'+n(cleanTitle(t.name))};
 function cleanTitle(s){return s.replace(/\s*[-–]\s*[^-–]*(remaster|mono|stereo|version|mix|edit|deluxe)[^-–]*$/i,'').replace(/\s*[\(\[][^\)\]]*(remaster|mono|stereo|version|deluxe)[^\)\]]*[\)\]]/ig,'').trim()}
-const SUS_T=/remaster(ed)?|mono|stereo mix|version/i,SUS_A=/remaster|greatest hits|best of|collection|anthology|essential|gold|platinum|deluxe|expanded|anniversary|hits/i;
+const SUS_T=/remaster(ed)?|remasteriz|mono|stereo mix|version|versi[oó]n/i,SUS_A=/remaster|greatest hits|best of|collection|anthology|essential|gold|platinum|deluxe|expanded|anniversary|hits|[eé]xitos|lo mejor|mejores|colecci[oó]n|antolog[ií]a|esencial|\boro\b|platino|aniversario|edici[oó]n|recopilatorio|singles|grandes|the very best|complete|reissue|en directo|en vivo/i;
 const suspicious=t=>SUS_T.test(t.name)||SUS_A.test(t.album)||t.comp;
 function effYear(t){
   const k=keyOf(t);
@@ -538,7 +539,7 @@ function evalMusic(){
 let mbBusy=false;
 const normMB=s=>s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/\(.*?\)|\[.*?\]/g,'').replace(/[^a-z0-9]+/g,' ').trim();
 async function mbLookup(t){
-  const a=t.artist.split(',')[0].trim(),title=cleanTitle(t.name);
+  const a=t.artist.split(',')[0].trim(),title=cleanTitle(t.name).replace(/\s*[\(\[].*?[\)\]]/g,'').replace(/\s+-\s+.*$/,'').trim()||cleanTitle(t.name);
   const r=await fetch('https://musicbrainz.org/ws/2/recording/?fmt=json&limit=25&query='+encodeURIComponent(`recording:"${title}" AND artist:"${a}"`));
   if(!r.ok)throw new Error('HTTP '+r.status);
   const j=await r.json(),bad=/live|demo|instrumental|karaoke/i;
@@ -548,21 +549,30 @@ async function mbLookup(t){
 }
 async function mbRun(){
   if(mbBusy)return;
-  const todo=[];const seen=new Set();
-  for(const p of setup.pls){if(!p.on)continue;for(const t of p.tracks){const k=keyOf(t);if(!seen.has(k)&&suspicious(t)&&mbCache[k]===undefined&&!fixes[k]){seen.add(k);todo.push(t)}}}
-  if(!todo.length){$('mbT').textContent='';$('mbProg').style.display='none';evalMusic();return}
-  mbBusy=true;const prog=$('mbProg');prog.style.display='block';
-  let done=0,fails=0;
+  const sus=[],rest=[],seen=new Set();
+  for(const p of setup.pls){if(!p.on)continue;for(const t of p.tracks){const k=keyOf(t);if(seen.has(k)||mbCache[k]!==undefined||fixes[k])continue;seen.add(k);(suspicious(t)?sus:rest).push(t)}}
+  const todo=sus.concat(rest);                       // primero las dudosas, luego todas las demás
+  if(!todo.length){$('mbT').innerHTML=setup.pls.some(p=>p.on)?'<span class="ok">Años comprobados.</span>':'';$('mbProg').style.display='none';evalMusic();return}
+  mbBusy=true;evalMusic();const prog=$('mbProg');prog.style.display='block';
+  let done=0,fails=0,streak=0,stopped=false;
   for(const t of todo){
-    $('mbT').textContent=`Comprobando años: ${done} de ${todo.length}`;prog.firstElementChild.style.width=Math.round(done/todo.length*100)+'%';
-    try{mbCache[keyOf(t)]=await mbLookup(t)}catch(e){fails++}
+    const left=Math.ceil((todo.length-done)*1.3/60);
+    $('mbT').textContent=`Comprobando años: ${done} de ${todo.length} (unos ${left} min)`;prog.firstElementChild.style.width=Math.round(done/todo.length*100)+'%';
+    let y;
+    try{y=await mbLookup(t)}catch(e){
+      if(/HTTP (429|50\d)/.test(e.message)){await sleep(5000);try{y=await mbLookup(t)}catch(e2){}}
+    }
+    if(y===undefined){fails++;streak++}else{mbCache[keyOf(t)]=y;streak=0}
     done++;
     if(done%5===0){store.set('dr_mb',JSON.stringify(mbCache));if(cur==='sMusic')evalMusic()}
+    if(streak>=8){stopped=true;break}
     await sleep(1100);
   }
   store.set('dr_mb',JSON.stringify(mbCache));
   mbBusy=false;prog.style.display='none';
-  $('mbT').innerHTML=fails?`<span class="warn">${fails} canciones sin comprobar (se mantiene el año de Spotify).</span>`:'<span class="ok">Años comprobados.</span>';
+  const left2=todo.length-done;
+  $('mbT').innerHTML=(fails||stopped)?`<span class="warn">${stopped?`Sin conexión con MusicBrainz: quedan ${left2+fails} canciones sin comprobar`:`${fails} canciones sin comprobar`} (se usa el año de Spotify).</span> <button class="g s" id="mbRetry">Reintentar</button>`:'<span class="ok">Años comprobados.</span>';
+  const rb=$('mbRetry');if(rb)rb.onclick=()=>mbRun();
   evalMusic();
 }
 
