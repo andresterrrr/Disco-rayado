@@ -9,7 +9,7 @@
 <link rel="icon" href="icon-192.png">
 <title>Disco Rayado</title>
 <style>
-:root{--ink:#0d0f14;--panel:#161922;--panel2:#1f232d;--line:#2b303c;--text:#eef1f6;--dim:#8d96a7;--red:#f0475a;--blue:#4da3ff;--green:#2ed08b;--amber:#f2b63a;--grad:linear-gradient(100deg,#f0475a,#b05cd6 55%,#4da3ff)}
+:root{--ink:#0d0f14;--panel:#161922;--panel2:#1f232d;--line:#2b303c;--text:#eef1f6;--dim:#8d96a7;--red:#f0475a;--blue:#4da3ff;--green:#2ed08b;--amber:#f2b63a;--grad:linear-gradient(100deg,#f0475a,#b05cd6 55%,#4da3ff);--cw:min(98px,22vh);--ch:calc(var(--cw)*1.306)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 html{font-size:clamp(12px,3.2vh,17px)}
@@ -65,18 +65,107 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .prog{height:.35rem;border-radius:1rem;background:var(--panel2);overflow:hidden;margin-top:.3rem}.prog i{display:block;height:100%;width:0;background:var(--grad);transition:width .3s}
 
 /* preparación */
-#sPrep,#sReady{gap:.9rem}
+#sPrep{gap:.9rem}
 .chk{display:flex;gap:.6rem;align-items:flex-start;padding:.4rem 0}
 .chk b{flex:none;width:1.5rem;height:1.5rem;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:.8rem}
 
+/* ====== Fase 2: estructura común de pantallas de partida ====== */
+#sRaffle,#sDeal,#sBlind,#sPlace,#sBoard,#sEnd{flex-direction:column}
+.top{display:flex;align-items:center;justify-content:space-between;gap:.6rem;min-height:2.4rem;flex:none}
+.who{flex:1;text-align:center;line-height:1.25;min-width:0}
+.who b{font-size:1.05rem}
+.gearb{flex:none;font-size:1rem;padding:.3rem .7rem}
+.rem{display:flex;align-items:center;gap:.4rem;min-width:9.5rem;flex:none}
+.rem b{font-size:1.15rem;line-height:1}
+.rem .rb{width:4.2rem;height:.45rem;border-radius:1rem;background:var(--panel2);overflow:hidden}
+.rem .rb u{display:block;height:100%;border-radius:1rem;text-decoration:none;transition:width .4s}
+.bot{display:flex;justify-content:center;align-items:center;gap:.8rem;min-height:2.9rem;margin-top:auto;flex:none}
+.bot button{min-width:11rem}
+
+/* sorteo */
+#sRaffle{flex-direction:row;align-items:center;justify-content:center;gap:2.2rem}
+#wheelBox{position:relative;width:min(46vh,230px);height:min(46vh,230px);flex:none}
+#wheel{position:absolute;inset:0;border-radius:50%;border:4px solid var(--line);transition:transform 3.2s cubic-bezier(.12,.65,.1,1);box-shadow:0 0 30px #b05cd644}
+.wl{position:absolute;left:50%;top:50%;width:2rem;height:2rem;margin:-1rem 0 0 -1rem;display:flex;align-items:center;justify-content:center;font-weight:800;color:#0d0f14;font-size:1rem}
+.ptr{position:absolute;top:-.55rem;left:50%;margin-left:-.7rem;border-left:.7rem solid transparent;border-right:.7rem solid transparent;border-top:1.1rem solid #fff;z-index:2;filter:drop-shadow(0 0 4px #000)}
+
+/* cartas */
+.card{width:var(--cw);height:var(--ch);flex:none;position:relative;border-radius:.8rem;background:linear-gradient(160deg,#252a3a,#171a24);border:1.5px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:.5em .35em;text-align:center;font-size:max(10px,calc(var(--cw)*.115));transition:border-color .2s,box-shadow .2s}
+.ca,.ct{max-width:100%;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
+.ca{color:var(--dim)}.ct{font-weight:600}
+.cy{font-size:2.5em;font-weight:800;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.card.ok{border-color:var(--green);box-shadow:0 0 18px #2ed08b88}
+.card.bad{border-color:var(--red);box-shadow:0 0 18px #f0475a88;background:linear-gradient(160deg,#3a1d24,#1d1217);justify-content:center;gap:.4em}
+.mk{position:absolute;top:.2em;right:.35em;font-size:1.5em;font-weight:800;line-height:1.1}
+.card.ok .mk{color:var(--green)}.card.bad .mk{color:var(--red)}
+.era{font-size:1.15em;color:var(--text);line-height:1.3}
+.era b{display:block;font-size:2.2em;color:var(--red);font-weight:800;line-height:1.1}
+.cb{width:var(--cw);height:var(--ch);border-radius:.8rem;background:linear-gradient(160deg,#1f232d,#0d0f14);border:1.5px solid #3a3f52;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 .35rem #14171f}
+.cb img{width:62%;height:auto;border-radius:22%}
+.fc{width:var(--cw);height:var(--ch);perspective:700px;flex:none;transition:transform .35s,opacity .6s}
+.fi{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s}
+.fc.rev .fi{transform:rotateY(180deg)}
+.fb,.ff{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden}
+.ff{transform:rotateY(180deg)}
+.fc.zoom{transform:scale(1.16)}
+.fc.fall{transform:translateY(70px) rotate(16deg);opacity:0;transition:transform .6s ease-in,opacity .6s}
+
+/* cartas iniciales */
+.drow{display:flex;flex-wrap:wrap;justify-content:center;gap:.7rem;max-width:100%}
+.dc{display:flex;flex-direction:column;align-items:center;gap:.35rem;width:var(--cw)}
+.dc .dn{font-size:.78rem;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+/* línea del tiempo */
+.track{display:flex;align-items:flex-end;gap:.7rem;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none;padding:.2rem 0 .9rem;flex:none;height:calc(var(--ch) + 4rem)}
+.track::-webkit-scrollbar{display:none}
+.track.plain{padding:.2rem .6rem .9rem}
+.sp{flex:none;width:50%}
+.unit{display:flex;flex-direction:column;align-items:center;flex:none}
+.tab{width:max-content;font-size:max(10px,calc(var(--cw)*.105));padding:.12em .6em;background:var(--panel2);border:1.5px solid var(--line);border-bottom:none;border-radius:.6em .6em 0 0;color:var(--dim);white-space:nowrap;margin-bottom:-1px;transition:border-color .2s,box-shadow .2s}
+.unit.lit .card,.unit.lit .tab{border-color:var(--blue);box-shadow:0 0 14px #4da3ffaa}
+.ph{flex:none;width:0;overflow:hidden;transition:width .45s}
+.ph.open{width:var(--cw)}
+.ph .fc{opacity:0}
+.ph.open .fc{opacity:1}
+
+/* colocación */
+#fz{position:relative;height:calc(var(--ch)*.78);flex:none;z-index:3}
+#mys{position:absolute;top:0;left:50%;width:var(--cw);height:var(--ch);margin-left:calc(var(--cw)/-2);touch-action:none;cursor:grab;transition:opacity .35s}
+#mys.gone{opacity:0;pointer-events:none}
+.mysi{width:100%;height:100%;transform:perspective(520px) rotateX(16deg) rotateY(var(--ry,0deg));filter:drop-shadow(0 .9rem .7rem #000a);animation:flt 2.4s ease-in-out infinite}
+@keyframes flt{0%,100%{translate:0 0}50%{translate:0 -5px}}
+#plHint.okc{color:var(--green);font-weight:700}
+#plHint.badc{color:var(--red);font-weight:700}
+
+/* marcador */
+.bh{position:relative;display:flex;align-items:center;gap:.7rem;min-height:2.9rem;flex:none}
+.who2{display:flex;align-items:center;gap:.6rem;min-width:0}
+.who2 .nm2{font-size:1.2rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:14rem}
+.circs{display:flex;gap:.45rem;margin-left:auto}
+.cir{position:relative;width:2.3rem;height:2.3rem;padding:0;border-radius:50%;color:#0d0f14;font-weight:800;font-size:.85rem;border:2px solid transparent}
+.cir.plus{background:var(--panel2);color:var(--text);border:1px solid var(--line);font-size:1.1rem}
+.cir.turn{border-color:#fff}
+.bdg{position:absolute;top:-.3rem;right:-.3rem;min-width:1.1rem;height:1.1rem;border-radius:1rem;background:var(--amber);color:#0d0f14;font-size:.65rem;font-style:normal;display:flex;align-items:center;justify-content:center;padding:0 .2rem}
+.bubble{position:absolute;right:0;top:100%;margin-top:.2rem;display:none;gap:.5rem;padding:.55rem;background:var(--panel);border:1px solid var(--line);border-radius:1rem;z-index:6;flex-wrap:wrap;max-width:60%;justify-content:flex-end}
+.bubble.on{display:flex}
+
+/* fin provisional */
+#sEnd{align-items:center;justify-content:center;gap:.7rem;text-align:center}
+#enList{width:min(26rem,92%);text-align:left}
+
 /* turno a ciegas */
-#sBlind{flex-direction:column;align-items:center;justify-content:center;gap:.6rem}
-#vin{width:min(42vh,210px);height:min(42vh,210px);display:flex;align-items:center;justify-content:center;transition:transform .18s ease-out}
+.mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;min-height:0}
+#vin{width:min(36vh,190px);height:min(36vh,190px);display:flex;align-items:center;justify-content:center;transition:transform .18s ease-out}
 #vin img{width:100%;height:100%;border-radius:22%;animation:spin 5s linear infinite;box-shadow:0 0 50px #b05cd655}
 #vin.pz img{animation-play-state:paused}
 @keyframes spin{to{transform:rotate(360deg)}}
-#gear{position:absolute;top:.6rem;right:.8rem;display:none}
-#revealBox{min-height:3.2rem;text-align:center}
+#bdMsg{min-height:1.2rem;text-align:center}
+
+/* avisos */
+.toast{position:fixed;top:.7rem;left:50%;transform:translateX(-50%);z-index:70;background:var(--panel);border:1px solid var(--amber);color:var(--amber);font-weight:700;border-radius:2rem;padding:.5rem 1.2rem;display:none;font-size:.9rem}
+.toast.on{display:block}
+#spWarn{position:fixed;top:.6rem;left:50%;transform:translateX(-50%);z-index:65;background:var(--panel);border:1px solid var(--amber);border-radius:1rem;padding:.5rem .9rem;display:none;align-items:center;gap:.7rem;font-size:.85rem}
+#spWarn.on{display:flex}
 
 /* modales */
 .modal{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;z-index:50;padding:1rem}
@@ -149,27 +238,68 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
   </div>
 </div>
 
-<div id="sReady" class="scr">
-  <div class="side" style="width:38%">
-    <h1>Partida preparada</h1>
-    <div class="sub" id="rdInfo"></div>
-    <div class="foot"><button class="g" id="bRdBack">Volver</button><button id="bBlind" class="grow">Probar turno a ciegas</button></div>
+<!-- Sorteo -->
+<div id="sRaffle" class="scr">
+  <div id="wheelBox"><div class="ptr"></div><div id="wheel"></div></div>
+  <div class="col" style="gap:.6rem;align-items:flex-start;min-width:12rem;max-width:45%">
+    <h1>¿Quién empieza?</h1>
+    <div class="sub" id="rfTxt">Girando la ruleta…</div>
+    <button id="bRfNext" style="display:none">Repartir cartas</button>
   </div>
-  <div class="panel grow scroll" id="rdList"></div>
 </div>
 
+<!-- Cartas iniciales -->
+<div id="sDeal" class="scr" style="align-items:center;justify-content:center;gap:.8rem">
+  <h1>Cartas iniciales</h1>
+  <div class="sub">Un regalo para cada jugador. No cuenta para llegar a las 10.</div>
+  <div class="drow" id="dealRow"></div>
+  <button id="bDealGo" style="visibility:hidden">Empezar partida</button>
+</div>
+
+<!-- Turno a ciegas -->
 <div id="sBlind" class="scr">
-  <div class="sub" id="bdTop" style="position:absolute;top:.6rem;left:1rem"></div>
-  <button class="g s" id="gear">⚙ Saltar</button>
-  <div id="vin"><img src="icon-512.png" alt=""></div>
-  <div class="sub" id="bdMsg">Turno a ciegas</div>
-  <div class="row"><button class="g" id="bPause">Pausa</button><button id="bReveal">Desvelar</button><button class="g" id="bBdOut">Salir</button></div>
-  <div id="revealBox"></div>
+  <div class="top"><div class="rem" id="remB"></div><div class="who" id="bdWho"></div><button class="g s gearb" id="gear">⚙</button></div>
+  <div class="mid">
+    <div id="vin"><img src="icon-512.png" alt=""></div>
+    <div class="sub" id="bdMsg"></div>
+    <div class="row"><button class="g" id="bPause">Pausa</button><button id="bReveal" disabled>Desvelar y colocar</button><button class="g" id="bRetry" style="display:none">Reintentar</button></div>
+  </div>
+</div>
+
+<!-- Colocación -->
+<div id="sPlace" class="scr">
+  <div class="top"><div class="rem" id="remP"></div><div class="who" id="plWho"></div><button class="g s gearb" id="gear2">⚙</button></div>
+  <div id="fz"><div id="mys"><div class="mysi"><div class="cb"><img src="icon-192.png" alt=""></div></div></div></div>
+  <div id="trk" class="track"></div>
+  <div class="bot"><button id="bConfirm" disabled>Confirmar posición</button><div id="resBtns"></div></div>
+</div>
+
+<!-- Marcador -->
+<div id="sBoard" class="scr" style="gap:.5rem">
+  <div class="bh"><div class="who2" id="bWho"></div><div class="sub" id="bTitle" style="position:absolute;left:0;right:0;text-align:center;font-weight:700;pointer-events:none"></div><div class="circs" id="bCirc"></div><div id="bubble" class="bubble"></div></div>
+  <div id="bTrk" class="track plain"></div>
+  <div class="bot"><button id="bBoardNext">Siguiente turno</button></div>
+</div>
+
+<!-- Fin (provisional) -->
+<div id="sEnd" class="scr">
+  <div class="sub" id="enSub">Fin de la partida</div>
+  <h1 id="enTitle"></h1>
+  <div class="panel" id="enList"></div>
+  <div class="sub" id="enNote"></div>
+  <button id="bEndMenu">Menú</button>
 </div>
 
 <div id="mConfirm" class="modal"><div class="panel"><h2 id="mcT"></h2><div class="sub" id="mcB"></div><div class="row"><button class="g" id="mcNo">Cancelar</button><button id="mcYes">Aceptar</button></div></div></div>
+<div id="mGear" class="modal"><div class="panel col" style="gap:.5rem"><h2>Ajustes de la partida</h2>
+  <button class="g" id="gSkip">Saltar canción</button><div class="sub" id="gSkipT">Solo se puede usar si el audio ha fallado.</div>
+  <button class="g" id="gRestart">Reiniciar partida</button>
+  <button class="g" id="gExit">Salir al menú</button>
+  <button id="gClose">Cerrar</button></div></div>
 <div id="pause" class="modal"><div class="big">Partida en pausa</div><div class="sub">Has salido de la app. La música se ha detenido.</div><button id="bCont">Continuar</button></div>
 <div id="mResume" class="modal"><div class="panel"><h2>Hay una partida guardada</h2><div class="sub">¿Quieres seguir con ella?</div><div class="row"><button class="g" id="rsNo">Descartar</button><button id="rsYes">Reanudar</button></div></div></div>
+<div id="toast" class="toast"></div>
+<div id="spWarn"><span>Spotify parece cerrado. Ábrelo y toca Reintentar.</span><button class="s" id="bSpRetry">Reintentar</button></div>
 <div id="portrait">Gira el móvil en horizontal para jugar</div>
 
 <script>
@@ -232,6 +362,7 @@ async function api(method,path,{query,body}={},retry=true){
 
 // ================= Pantallas =================
 let cur=null;
+const GAME_SCREENS=['sRaffle','sDeal','sBlind','sPlace','sBoard'];
 function show(id){
   document.querySelectorAll('.scr.on').forEach(s=>{if(s.id!==id){s.classList.remove('on')}});
   const e=$(id);e.classList.add('on');cur=id;
@@ -461,70 +592,361 @@ function buildGame(){
   const reserveN=3+((rest.length-3)%n);
   const reserve=rest.slice(0,reserveN),deck=rest.slice(reserveN);
   const ini=initials(names);
-  return{players:names.map((nm,i)=>({name:nm,ini:ini[i],color:COLORS[i],tokens:0,board:[initial[i]]})),deck,reserve,skips:0,turn:0,phase:'ready',saved:Date.now()};
+  return{players:names.map((nm,i)=>({name:nm,ini:ini[i],color:COLORS[i],tokens:0,board:[initial[i]]})),deck,reserve,deckTotal:deck.length,skips:0,first:null,turn:0,phase:'raffle',stat:{t:0,h:0},log:[],lastWarn:false,winner:null,res:null,saved:Date.now()};
 }
-let game=jget('dr_game',null);
+function normGame(g){
+  if(!g||!Array.isArray(g.players))return null;
+  g.stat=g.stat||{t:0,h:0};g.log=g.log||[];g.deckTotal=g.deckTotal||g.deck.length;
+  if(g.winner===undefined)g.winner=null;if(g.lastWarn===undefined)g.lastWarn=false;if(g.res===undefined)g.res=null;
+  if(g.first===undefined||g.phase==='ready'||g.phase==='blind'){g.first=null;g.turn=0;g.phase='raffle'}
+  return g;
+}
+let game=normGame(jget('dr_game',null));
 const saveGame=()=>{if(game){game.saved=Date.now();store.set('dr_game',JSON.stringify(game))}};
 
-// ================= Preparado + turno a ciegas =================
-function showReady(){
-  const g=game,n=g.players.length;
-  $('rdInfo').innerHTML=`${n} jugadores · ${g.deck.length} canciones de turno (${g.deck.length/n} por jugador) · ${g.reserve.length} de reserva.<br><br>Fase 1 completada: esta es la base. En la siguiente fase llegan los turnos, la colocación y el marcador. Ya puedes probar cómo suena un turno a ciegas.`;
-  $('rdList').innerHTML=g.players.map(p=>`<div class="pl"><div class="dot" style="background:${p.color}">${esc(p.ini)}</div><div class="grow"><div class="nm">${esc(p.name)}</div><div class="sub">Carta inicial: ${p.board[0].y} · ${esc(p.board[0].artist)} – ${esc(p.board[0].name)}</div></div></div>`).join('');
-  show('sReady');
+// ================= Cartas y línea del tiempo =================
+const backHTML=()=>'<div class="cb"><img src="icon-192.png" alt=""></div>';
+const cardHTML=(c,cls='')=>`<div class="card ${cls}"><div class="ca">${esc(c.artist)}</div><div class="cy">${c.y}</div><div class="ct">${esc(c.name)}</div></div>`;
+const flipHTML=front=>`<div class="fc"><div class="fi"><div class="fb">${backHTML()}</div><div class="ff">${front}</div></div></div>`;
+function units(b){const u=[];for(const c of b){const l=u[u.length-1];if(l&&l.y===c.y)l.cards.push(c);else u.push({y:c.y,cards:[c]})}return u}
+function unitHTML(u,i){
+  if(u.cards.length===1)return `<div class="unit" data-u="${i}">${cardHTML(u.cards[0])}</div>`;
+  const tabs=u.cards.slice(1).map(c=>`<div class="tab">${c.y} - ${esc(c.artist)} - ${esc(c.name)}</div>`).join('');
+  return `<div class="unit pile" data-u="${i}">${tabs}${cardHTML(u.cards[0])}</div>`;
 }
-let np=null,audioOn=false,manualPause=false,watch=null,hb=null,startAt=0;
+function renderTrack(el,cards,plain){
+  el.className='track'+(plain?' plain':'');
+  el.innerHTML=(plain?'':'<div class="sp"></div>')+units(cards).map(unitHTML).join('')+(plain?'':'<div class="sp end"></div>');
+}
+
+// ================= Barra de canciones restantes =================
+let risk=0;
+function riskSim(){
+  const g=game,n=g.players.length,p=(g.stat.h+5)/(g.stat.t+10);
+  const need=g.players.map(pl=>Math.max(1,10-(pl.board.length-1)));
+  let run=0;const S=500;
+  for(let s=0;s<S;s++){
+    const nd=need.slice();let d=g.deck.length,t=g.turn,won=false;
+    while(d>0){if(Math.random()<p){nd[t]--;if(nd[t]<=0){won=true;break}}d--;t=(t+1)%n}
+    if(!won)run++;
+  }
+  return run/S;
+}
+function remHTML(){
+  const g=game,col=risk<.15?'var(--green)':risk<.4?'var(--amber)':'var(--red)';
+  const frac=Math.max(.04,Math.min(1,g.deck.length/(g.deckTotal||1)));
+  return `<b style="color:${col}">${g.deck.length}</b><span class="sub">canciones</span><div class="rb"><u style="width:${frac*100}%;background:${col}"></u></div>`;
+}
+function toast(t,ms=3200){const e=$('toast');e.textContent=t;e.classList.add('on');clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove('on'),ms)}
+
+// ================= Sorteo =================
+let rfTok=0;
+function showRaffle(){
+  const g=game,n=g.players.length;
+  g.phase='raffle';
+  if(g.first==null){g.first=Math.floor(Math.random()*n);g.turn=g.first}
+  saveGame();
+  const wheel=$('wheel'),seg=360/n;
+  wheel.style.background='conic-gradient('+g.players.map((p,i)=>`${p.color} ${i*seg}deg ${(i+1)*seg}deg`).join(',')+')';
+  show('sRaffle');
+  const size=wheel.offsetWidth||200,r=size*.34;
+  wheel.innerHTML=g.players.map((p,i)=>{const a=(i+.5)*seg;return `<div class="wl" style="transform:rotate(${a}deg) translateY(${-r}px) rotate(${-a}deg)">${esc(p.ini)}</div>`}).join('');
+  $('rfTxt').textContent='Girando la ruleta…';$('bRfNext').style.display='none';
+  wheel.style.transition='none';wheel.style.transform='rotate(0deg)';void wheel.offsetWidth;
+  const mid=(g.first+.5)*seg,off=(Math.random()-.5)*seg*.5;
+  wheel.style.transition='';wheel.style.transform=`rotate(${360*4-mid+off}deg)`;
+  const my=++rfTok;
+  setTimeout(()=>{
+    if(my!==rfTok)return;
+    const p=g.players[g.first];
+    $('rfTxt').innerHTML=`Empieza <b style="color:${p.color}">${esc(p.name)}</b>.<br>Después se sigue el orden en que se registraron los jugadores.`;
+    $('bRfNext').style.display='';
+  },3400);
+}
+
+// ================= Cartas iniciales =================
+let dealTok=0;
+async function showDeal(){
+  const g=game,n=g.players.length;
+  g.phase='deal';saveGame();
+  const cw=Math.max(54,Math.min(98,innerHeight*.22,(innerWidth-56)/n-12));
+  $('sDeal').style.setProperty('--cw',cw+'px');
+  $('dealRow').innerHTML=g.players.map((p,i)=>`<div class="dc">${flipHTML(cardHTML(p.board[0])).replace('class="fc"',`class="fc" id="dc${i}"`)}<div class="dn"><span style="color:${p.color}">●</span> ${esc(p.name)}</div></div>`).join('');
+  $('bDealGo').style.visibility='hidden';
+  show('sDeal');
+  const my=++dealTok;
+  for(let i=0;i<n;i++){await sleep(380);if(my!==dealTok||cur!=='sDeal')return;$('dc'+i).classList.add('rev')}
+  await sleep(700);if(my!==dealTok||cur!=='sDeal')return;
+  $('bDealGo').style.visibility='visible';
+}
+
+// ================= Reproducción =================
+let np=null,audioOn=false,manualPause=false,watch=null,hb=null,tTok=0,skipOk=false,resolving=false,pl=null;
 async function playTrack(t){
   const d=await checkDevice();
   if(!d.ok){return{ok:false,msg:d.msg}}
-  const pid=t.pid;
-  const r=await api('PUT','/me/player/play',{query:{device_id:d.id},body:{context_uri:'spotify:playlist:'+pid,offset:{uri:t.uri}}});
-  if(r.status!==204&&r.status!==200)return{ok:false,msg:'Spotify no pudo reproducirla ('+(r.err||r.status)+').'};
+  const r=await api('PUT','/me/player/play',{query:{device_id:d.id},body:{context_uri:'spotify:playlist:'+t.pid,offset:{uri:t.uri}}});
+  if(r.status!==204&&r.status!==200)return{ok:false,tech:true,msg:'Spotify no pudo reproducirla ('+(r.err||r.status)+').'};
   setTimeout(async()=>{await api('PUT','/me/player/shuffle',{query:{state:'false',device_id:d.id}});await api('PUT','/me/player/repeat',{query:{state:'track',device_id:d.id}})},1500);
   return{ok:true};
 }
-async function startBlind(){
-  const g=game;if(!g.deck.length){$('bdMsg').textContent='No quedan canciones en el mazo.';return}
-  np=g.deck[0];g.phase='blind';saveGame();       // se guarda antes de que suene
-  show('sBlind');$('revealBox').innerHTML='';$('gear').style.display='none';
-  $('bdTop').textContent='Quedan '+g.deck.length+' canciones';
-  $('bdMsg').textContent='Preparando…';manualPause=false;$('bPause').textContent='Pausa';$('vin').classList.remove('pz');
+async function stopAudio(offRepeat){
+  audioOn=false;clearTimeout(watch);stopHb();
+  if(deviceState.id){await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}});if(offRepeat)await api('PUT','/me/player/repeat',{query:{state:'off',device_id:deviceState.id}})}
+}
+function startHb(){stopHb();hb=setInterval(()=>{if(manualPause)return;$('vin').style.transform='scale('+(.94+Math.random()*.18)+')'},350+Math.random()*300)}
+function stopHb(){clearInterval(hb);$('vin').style.transform=''}
+function note(html){$('bdMsg').innerHTML=html;if(cur==='sPlace'&&!resolving&&$('plHint'))$('plHint').innerHTML=html}
+
+// ================= Turno a ciegas =================
+async function startTurn(autoPlace){
+  const g=game;
+  if(!g.deck.length){endDeck();return}
+  const my=++tTok;
+  np=g.deck[0];g.phase='turn';saveGame();           // se guarda antes de que suene
+  risk=riskSim();
+  const P=g.players[g.turn];
+  $('remB').innerHTML=remHTML();
+  $('bdWho').innerHTML=`<b>Turno de <span style="color:${P.color}">${esc(P.name)}</span></b>`;
+  manualPause=false;$('bPause').textContent='Pausa';$('vin').classList.remove('pz');
+  show('sBlind');
+  if(g.deck.length===g.players.length&&!g.lastWarn){g.lastWarn=true;saveGame();toast('Última ronda: queda una canción por jugador')}
+  await beginAudio(autoPlace,my);
+}
+async function beginAudio(autoPlace,my){
+  if(my===undefined)my=tTok;
+  $('bdMsg').textContent='Preparando…';$('bRetry').style.display='none';$('bReveal').disabled=true;skipOk=false;
   const r=await playTrack(np);
-  if(!r.ok){$('bdMsg').innerHTML='<span class="warn">'+esc(r.msg)+'</span>';$('gear').style.display='block';return}
-  audioOn=true;startAt=Date.now();$('bdMsg').textContent='Escucha y piensa…';
-  startHb();
+  if(my!==tTok)return;
+  if(!r.ok){note('<span class="warn">'+esc(r.msg)+'</span>');$('bRetry').style.display='';if(r.tech)skipOk=true;return}
+  audioOn=true;$('bdMsg').textContent='Escucha y piensa…';$('bReveal').disabled=false;startHb();
   clearTimeout(watch);
   watch=setTimeout(async()=>{
-    if(manualPause||!audioOn)return;
+    if(my!==tTok||manualPause||!audioOn)return;
     const s=await api('GET','/me/player');
     const ok=s.status===200&&s.data&&s.data.is_playing&&s.data.progress_ms>1500&&s.data.item&&s.data.item.uri===np.uri;
-    if(!ok&&!manualPause&&audioOn){$('bdMsg').innerHTML='<span class="warn">El audio no avanza.</span>';$('gear').style.display='block'}
+    if(my===tTok&&!ok&&!manualPause&&audioOn){note('<span class="warn">El audio no avanza. Puedes saltar la canción desde el engranaje ⚙.</span>');skipOk=true}
   },6000);
+  if(autoPlace)toPlace();
 }
-function startHb(){stopHb();hb=setInterval(()=>{if(manualPause)return;$('vin').style.transform='scale('+(1+Math.random()*.12)+')'},350+Math.random()*300)}
-function stopHb(){clearInterval(hb);$('vin').style.transform=''}
 async function togglePause(){
   if(!deviceState.id)return;
   if(!manualPause){manualPause=true;$('bPause').textContent='Seguir';$('vin').classList.add('pz');await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}})}
   else{manualPause=false;$('bPause').textContent='Pausa';$('vin').classList.remove('pz');await api('PUT','/me/player/play',{query:{device_id:deviceState.id}})}
 }
-function reveal(){
-  if(!np)return;
-  $('revealBox').innerHTML=`<div class="big2">${np.y}</div><div class="sub">${esc(np.artist)} – ${esc(np.name)}</div>`;
+
+// ================= Colocación =================
+function toPlace(){
+  const g=game,P=g.players[g.turn];
+  g.phase='place';saveGame();
+  if(manualPause){manualPause=false;$('bPause').textContent='Pausa';$('vin').classList.remove('pz');if(deviceState.id)api('PUT','/me/player/play',{query:{device_id:deviceState.id}})}
+  stopHb();resolving=false;pl={slot:0,dx:0,chosen:false};
+  $('plWho').innerHTML=`<b>Turno de <span style="color:${P.color}">${esc(P.name)}</span></b><div class="sub" id="plHint">Desliza la línea o arrastra la carta al hueco que creas correcto.</div>`;
+  $('remP').innerHTML=remHTML();
+  const m=$('mys');m.classList.remove('gone');m.style.transform='';m.firstElementChild.style.setProperty('--ry','0deg');
+  $('bConfirm').style.display='';$('bConfirm').disabled=true;$('resBtns').innerHTML='';
+  renderTrack($('trk'),P.board,false);
+  show('sPlace');
+  requestAnimationFrame(()=>{const t=$('trk');t.scrollLeft=(t.scrollWidth-t.clientWidth)/2;updateSlot()});
 }
-async function leaveBlind(){
-  audioOn=false;clearTimeout(watch);stopHb();
-  if(deviceState.id){await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}});await api('PUT','/me/player/repeat',{query:{state:'off',device_id:deviceState.id}})}
-  game.phase='ready';saveGame();showReady();
+function slotNow(){
+  const trk=$('trk'),us=[...trk.querySelectorAll('.unit')];
+  if(!us.length)return 0;
+  const gap=parseFloat(getComputedStyle(trk).columnGap)||10;
+  const r=$('mys').getBoundingClientRect(),x=r.left+r.width/2;
+  let best=0,bd=1e9;
+  for(let i=0;i<=us.length;i++){
+    let gx;
+    if(i===0)gx=us[0].getBoundingClientRect().left-gap/2;
+    else if(i===us.length)gx=us[i-1].getBoundingClientRect().right+gap/2;
+    else gx=(us[i-1].getBoundingClientRect().right+us[i].getBoundingClientRect().left)/2;
+    const d=Math.abs(x-gx);if(d<bd){bd=d;best=i}
+  }
+  return best;
+}
+function updateSlot(){
+  if(!pl||resolving)return;
+  pl.slot=slotNow();
+  [...$('trk').querySelectorAll('.unit')].forEach((u,i)=>u.classList.toggle('lit',pl.chosen&&(i===pl.slot-1||i===pl.slot)));
+  $('bConfirm').disabled=!pl.chosen;
+}
+let drag=null,auto=0,autoRaf=0;
+$('mys').addEventListener('pointerdown',e=>{
+  if(resolving||!pl)return;
+  drag={x0:e.clientX,dx0:pl.dx};pl.chosen=true;
+  try{$('mys').setPointerCapture(e.pointerId)}catch(_){}
+  e.preventDefault();updateSlot();
+});
+$('mys').addEventListener('pointermove',e=>{
+  if(!drag||!pl)return;
+  const W=$('fz').clientWidth,cw=$('mys').offsetWidth,lim=Math.max(1,W/2-cw/2);
+  pl.dx=Math.max(-lim,Math.min(lim,drag.dx0+e.clientX-drag.x0));
+  $('mys').style.transform=`translateX(${pl.dx}px)`;
+  $('mys').firstElementChild.style.setProperty('--ry',(pl.dx/lim*12)+'deg');
+  const f=(W/2+pl.dx)/W;
+  auto=f<.18?-(.18-f)/.18:f>.82?(f-.82)/.18:0;
+  if(auto&&!autoRaf)autoLoop();
+  updateSlot();
+});
+['pointerup','pointercancel'].forEach(ev=>$('mys').addEventListener(ev,()=>{drag=null;auto=0}));
+function autoLoop(){autoRaf=requestAnimationFrame(()=>{autoRaf=0;if(!auto||!drag)return;$('trk').scrollLeft+=auto*14;updateSlot();autoLoop()})}
+$('trk').addEventListener('pointerdown',()=>{if(pl&&!resolving){pl.chosen=true}});
+$('trk').addEventListener('scroll',updateSlot);
+
+async function confirmPlace(){
+  if(resolving||!pl||!pl.chosen)return;
+  resolving=true;
+  $('bConfirm').style.display='none';
+  [...$('trk').querySelectorAll('.unit')].forEach(u=>u.classList.remove('lit'));
+  const g=game,t=g.deck[0],P=g.players[g.turn];
+  const us=units(P.board),s=pl.slot;
+  const ok=(s===0||us[s-1].y<=t.y)&&(s===us.length||t.y<=us[s].y);
+  g.deck.shift();g.stat.t++;if(ok)g.stat.h++;
+  let idx=0;for(let i=0;i<s;i++)idx+=us[i].cards.length;
+  if(ok)P.board.splice(idx,0,t);
+  g.res={p:g.turn,ok,idx:ok?idx:-1,y:t.y};
+  g.log.push({p:g.turn,ok,n:P.board.length-1});
+  if(ok&&P.board.length-1>=10)g.winner=g.turn;
+  g.phase='result';saveGame();                       // al confirmar se guarda
+  stopAudio(false);
+  const my=tTok;
+  if(!await animateResult(t,ok,s,my))return;
+  if(g.winner!==null){await sleep(1400);if(my!==tTok)return;showEnd();return}
+  const b=document.createElement('button');
+  if(ok){b.textContent='Continuar';b.onclick=()=>showBoard(g.turn)}
+  else{b.textContent='Siguiente turno';b.onclick=nextTurn}
+  $('resBtns').appendChild(b);
+}
+async function animateResult(t,ok,s,my){
+  const sl=async ms=>{await sleep(ms);return my===tTok};
+  const trk=$('trk'),us=[...trk.querySelectorAll('.unit')];
+  const front=ok?cardHTML(t,'ok')+'':`<div class="card bad"><div class="era">Era de<b>${t.y}</b></div></div>`;
+  const ph=document.createElement('div');ph.className='ph';
+  ph.innerHTML=flipHTML(ok?cardHTML(t,'ok').replace('</div></div>','</div><div class="mk">✓</div></div>'):front.replace('<div class="era">','<div class="mk">✕</div><div class="era">'));
+  trk.insertBefore(ph,us[s]||trk.querySelector('.sp.end'));
+  $('mys').classList.add('gone');
+  void ph.offsetWidth;ph.classList.add('open');
+  trk.scrollTo({left:Math.max(0,ph.offsetLeft+ph.offsetWidth/2-trk.clientWidth/2+parseFloat(getComputedStyle(document.documentElement).fontSize)*.35),behavior:'smooth'});
+  if(!await sl(600))return false;
+  ph.style.overflow='visible';
+  const fc=ph.querySelector('.fc');
+  fc.classList.add('rev');
+  if(!await sl(850))return false;
+  const h=$('plHint');if(h){h.className='sub '+(ok?'okc':'badc');h.textContent=ok?'¡Acierto!':'Fallo'}
+  if(ok){
+    fc.classList.add('zoom');if(!await sl(520))return false;fc.classList.remove('zoom');
+    return await sl(250);
+  }
+  if(!await sl(2700))return false;
+  fc.classList.add('fall');
+  if(!await sl(650))return false;
+  ph.style.overflow='hidden';ph.classList.remove('open');
+  return await sl(500);
+}
+
+// ================= Marcador =================
+let boardView=0;
+function showBoard(v){
+  const g=game;g.phase='board';saveGame();
+  boardView=(v===undefined)?g.turn:v;
+  renderBoard();show('sBoard');
+  requestAnimationFrame(()=>{
+    const t=$('bTrk'),P=g.players[boardView];
+    t.scrollLeft=0;
+    if(boardView===g.turn&&g.res&&g.res.ok&&g.res.p===g.turn){
+      let c=0,ui=0;for(const u of units(P.board)){c+=u.cards.length;if(c>g.res.idx)break;ui++}
+      const el=t.querySelectorAll('.unit')[ui];
+      if(el)t.scrollLeft=Math.max(0,el.offsetLeft+el.offsetWidth/2-t.clientWidth/2);
+    }
+  });
+}
+function renderBoard(){
+  const g=game,T=g.turn,V=boardView,n=g.players.length,P=g.players[V];
+  $('bWho').innerHTML=`<div class="dot" style="background:${P.color}">${esc(P.ini)}</div><div><div class="nm2">${esc(P.name)}</div><div class="sub">${P.board.length-1} de 10 cartas</div></div>`;
+  $('bTitle').textContent=V!==T?`Viendo el tablero de ${P.name}`:'';
+  const after=[];for(let k=1;k<n;k++)after.push((T+k)%n);
+  const list=V===T?after:[T,...after.filter(i=>i!==V)];
+  const shown=list.length>4?list.slice(0,3):list,rest=list.length>4?list.slice(3):[];
+  const cir=i=>{const p=g.players[i];return `<button class="cir ${i===T?'turn':''}" data-p="${i}" style="background:${p.color}">${esc(p.ini)}${p.tokens>0?`<i class="bdg">${p.tokens}</i>`:''}</button>`};
+  $('bCirc').innerHTML=shown.map(cir).join('')+(rest.length?'<button class="cir plus" id="bPlus">+</button>':'');
+  $('bubble').innerHTML=rest.map(cir).join('');$('bubble').classList.remove('on');
+  document.querySelectorAll('#bCirc .cir[data-p],#bubble .cir[data-p]').forEach(b=>b.onclick=()=>{boardView=+b.dataset.p;renderBoard();const t=$('bTrk');t.scrollLeft=0});
+  const pb=$('bPlus');if(pb)pb.onclick=e=>{e.stopPropagation();$('bubble').classList.toggle('on')};
+  renderTrack($('bTrk'),P.board,true);
+}
+document.addEventListener('click',e=>{if(!e.target.closest('#bubble,#bPlus'))$('bubble').classList.remove('on')});
+function nextTurn(){
+  const g=game;
+  if(g.winner!==null){showEnd();return}
+  if(!g.deck.length){endDeck();return}
+  g.turn=(g.turn+1)%g.players.length;
+  startTurn();
+}
+
+// ================= Final (provisional hasta la Fase 4) =================
+function endDeck(){game.phase='end';saveGame();showEnd()}
+function showEnd(){
+  const g=game;g.phase='end';saveGame();
+  stopAudio(true);
+  const cards=g.players.map(p=>p.board.length-1);
+  let title,sub;
+  if(g.winner!==null){title=`<span style="color:${g.players[g.winner].color}">${esc(g.players[g.winner].name)}</span>`;sub='Gana la partida'}
+  else{
+    const mx=Math.max(...cards),ws=g.players.filter((p,i)=>cards[i]===mx);
+    sub='Se acabó el mazo';
+    title=ws.length===1?`Gana <span style="color:${ws[0].color}">${esc(ws[0].name)}</span>`:'Empate en cartas';
+    $('enNote').textContent=ws.length===1?'':'El desempate llegará en la Fase 4.';
+  }
+  if(g.winner!==null)$('enNote').textContent='';
+  $('enSub').textContent=sub;$('enTitle').innerHTML=title;
+  $('enList').innerHTML=g.players.map((p,i)=>`<div class="pl"><div class="dot" style="background:${p.color}">${esc(p.ini)}</div><div class="grow nm">${esc(p.name)}</div><div class="sub">${cards[i]} cartas</div></div>`).join('');
+  show('sEnd');
+}
+
+// ================= Engranaje =================
+function openGear(){
+  $('gSkip').disabled=!skipOk;$('gSkipT').style.display=skipOk?'none':'block';
+  $('mGear').classList.add('on');
 }
 function skipTrack(){
   const g=game;
   if(g.skips>=2||g.reserve.length<=1){confirmBox('No se puede saltar','Ya no quedan canciones de reserva que se puedan usar.',()=>{},true);return}
   confirmBox('¿Seguro que quieres saltar?','Usa esta opción solo si el audio ha fallado. La canción se descarta y se repone de la reserva.',async()=>{
     g.deck.shift();g.deck.push(g.reserve.shift());g.skips++;saveGame();
-    audioOn=false;clearTimeout(watch);await startBlind();
+    audioOn=false;clearTimeout(watch);await startTurn();
   });
 }
+function restartGame(){
+  tTok++;rfTok++;dealTok++;stopAudio(true);
+  const old=game;game=buildGame();game.first=old.first==null?Math.floor(Math.random()*game.players.length):old.first;game.turn=game.first;
+  game.phase='deal';saveGame();showDeal();
+}
+function exitToMenu(){
+  tTok++;rfTok++;dealTok++;stopAudio(true);
+  game=null;store.del('dr_game');
+  renderPlayers();show('sPlay');
+}
+function resumeGame(){
+  const g=game;
+  if(g.winner!==null&&(g.phase==='result'||g.phase==='board')){showEnd();return}
+  switch(g.phase){
+    case 'deal':showDeal();break;
+    case 'turn':startTurn(false);break;
+    case 'place':startTurn(true);break;
+    case 'result':case 'board':showBoard(g.turn);break;
+    case 'end':showEnd();break;
+    default:showRaffle();
+  }
+}
+
+// ================= Aviso de Spotify cerrado =================
+setInterval(async()=>{
+  if(!audioOn||document.hidden||manualPause||$('pause').classList.contains('on'))return;
+  const r=await api('GET','/me/player/devices');
+  if(r.status===200&&!(r.data.devices||[]).length)$('spWarn').classList.add('on');
+  else $('spWarn').classList.remove('on');
+},10000);
+$('bSpRetry').onclick=async()=>{$('spWarn').classList.remove('on');if(np&&(cur==='sBlind'||cur==='sPlace')){const r=await playTrack(np);if(!r.ok)$('spWarn').classList.add('on');else audioOn=true}};
 
 // ================= Pausa al salir =================
 document.addEventListener('visibilitychange',async()=>{
@@ -533,16 +955,18 @@ document.addEventListener('visibilitychange',async()=>{
     if(audioOn&&deviceState.id){api('PUT','/me/player/pause',{query:{device_id:deviceState.id}})}
   }else{
     reqWake();
-    if(audioOn&&deviceState.id){
+    if(GAME_SCREENS.includes(cur)){
       $('pause').classList.add('on');
-      const s=await api('GET','/me/player');
-      if(s.status===200&&s.data&&s.data.is_playing)await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}});
+      if(audioOn&&deviceState.id){
+        const s=await api('GET','/me/player');
+        if(s.status===200&&s.data&&s.data.is_playing)await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}});
+      }
     }
   }
 });
 $('bCont').onclick=async()=>{
   $('pause').classList.remove('on');
-  if(!manualPause&&deviceState.id)await api('PUT','/me/player/play',{query:{device_id:deviceState.id}});
+  if(audioOn&&!manualPause&&deviceState.id)await api('PUT','/me/player/play',{query:{device_id:deviceState.id}});
 };
 
 // ================= Ventana de confirmación =================
@@ -566,16 +990,23 @@ $('bStart').onclick=async()=>{
   $('bStart').disabled=true;
   const d=await checkDevice();if(!d.ok){evalMusic();return}
   game=buildGame();saveGame();
-  if(!setup.prep){show('sPrep')}else showReady();
+  if(!setup.prep){show('sPrep')}else showRaffle();
 };
-$('bPrepOk').onclick=()=>{setup.prep=true;saveSetup();showReady()};
-$('bRdBack').onclick=()=>confirmBox('¿Volver a la música?','Se descarta la partida preparada.',()=>{game=null;store.del('dr_game');show('sMusic');evalMusic()});
-$('bBlind').onclick=startBlind;
+$('bPrepOk').onclick=()=>{setup.prep=true;saveSetup();showRaffle()};
+$('bRfNext').onclick=showDeal;
+$('bDealGo').onclick=()=>{game.turn=game.first;saveGame();startTurn()};
 $('bPause').onclick=togglePause;
-$('bReveal').onclick=reveal;
-$('bBdOut').onclick=leaveBlind;
-$('gear').onclick=skipTrack;
-$('rsYes').onclick=()=>{$('mResume').classList.remove('on');showReady()};
+$('bReveal').onclick=toPlace;
+$('bRetry').onclick=()=>beginAudio(false);
+$('bConfirm').onclick=confirmPlace;
+$('bBoardNext').onclick=nextTurn;
+$('gear').onclick=openGear;$('gear2').onclick=openGear;
+$('gClose').onclick=()=>$('mGear').classList.remove('on');
+$('gSkip').onclick=()=>{$('mGear').classList.remove('on');skipTrack()};
+$('gRestart').onclick=()=>{$('mGear').classList.remove('on');confirmBox('¿Reiniciar la partida?','Se reparten cartas iniciales nuevas. Se conservan los jugadores y la música.',restartGame)};
+$('gExit').onclick=()=>{$('mGear').classList.remove('on');confirmBox('¿Salir al menú?','Se borra la partida guardada y vuelves a los nombres.',exitToMenu)};
+$('bEndMenu').onclick=exitToMenu;
+$('rsYes').onclick=()=>{$('mResume').classList.remove('on');resumeGame()};
 $('rsNo').onclick=()=>{$('mResume').classList.remove('on');game=null;store.del('dr_game');showAfterTap()};
 
 // ================= Arranque =================
@@ -596,7 +1027,7 @@ async function boot(){
 $('sTap').addEventListener('click',async()=>{
   await goFull();
   route();
-  if(game&&game.players){$('mResume').classList.add('on')}
+  if(game&&game.players&&tok){$('mResume').classList.add('on')}
 });
 boot();
 if('serviceWorker' in navigator)navigator.serviceWorker.register('sw.js').catch(()=>{});
