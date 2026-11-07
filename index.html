@@ -95,7 +95,8 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .ca{color:var(--dim)}.ct{font-weight:600}
 .cy{font-size:2.5em;font-weight:800;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
 .card.ok{border-color:var(--green);box-shadow:0 0 18px #2ed08b88}
-.card.bad{border-color:var(--red);box-shadow:0 0 18px #f0475a88;background:linear-gradient(160deg,#3a1d24,#1d1217);justify-content:center;gap:.4em}
+.card.bad{border-color:var(--red);box-shadow:0 0 18px #f0475a88;background:linear-gradient(160deg,#3a1d24,#1d1217)}
+.card.bad .cy{background:none;color:var(--red)}
 .mk{position:absolute;top:.2em;right:.35em;font-size:1.5em;font-weight:800;line-height:1.1}
 .card.ok .mk{color:var(--green)}.card.bad .mk{color:var(--red)}
 .era{font-size:1.15em;color:var(--text);line-height:1.3}
@@ -116,12 +117,13 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .dc .dn{font-size:.78rem;font-weight:700;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 
 /* línea del tiempo */
-.track{display:flex;align-items:flex-end;gap:.7rem;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none;padding:.2rem 0 .9rem;flex:none;height:calc(var(--ch) + 4rem)}
+.track{display:flex;align-items:flex-end;gap:.7rem;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none;padding:.2rem 0 .9rem;flex:0 1 auto;min-height:calc(var(--ch) + 4rem)}
+.track.hp{min-height:calc(var(--ch) + 7.2rem)}
 .track::-webkit-scrollbar{display:none}
 .track.plain{padding:.2rem .6rem .9rem}
 .sp{flex:none;width:50%}
 .unit{display:flex;flex-direction:column;align-items:center;flex:none}
-.tab{width:max-content;font-size:max(10px,calc(var(--cw)*.105));padding:.12em .6em;background:var(--panel2);border:1.5px solid var(--line);border-bottom:none;border-radius:.6em .6em 0 0;color:var(--dim);white-space:nowrap;margin-bottom:-1px;transition:border-color .2s,box-shadow .2s}
+.tab{width:var(--cw);font-size:max(10px,calc(var(--cw)*.105));line-height:1.15;padding:.35em .4em .3em;background:linear-gradient(160deg,#252a3a,#171a24);border:1.5px solid var(--line);border-bottom:none;border-radius:.8rem .8rem 0 0;color:var(--dim);text-align:center;white-space:normal;overflow-wrap:anywhere;margin-bottom:-1px;transition:border-color .2s,box-shadow .2s}
 .unit.lit .card,.unit.lit .tab{border-color:var(--blue);box-shadow:0 0 14px #4da3ffaa}
 .ph{flex:none;width:0;overflow:hidden;transition:width .45s}
 .ph.open{width:var(--cw)}
@@ -251,7 +253,7 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 <!-- Cartas iniciales -->
 <div id="sDeal" class="scr" style="align-items:center;justify-content:center;gap:.8rem">
   <h1>Cartas iniciales</h1>
-  <div class="sub">Un regalo para cada jugador. No cuenta para llegar a las 10.</div>
+  <div class="sub">Un regalo para cada jugador. Cuenta como la primera de las 10 cartas.</div>
   <div class="drow" id="dealRow"></div>
   <button id="bDealGo" style="visibility:hidden">Empezar partida</button>
 </div>
@@ -615,7 +617,7 @@ function unitHTML(u,i){
   return `<div class="unit pile" data-u="${i}">${tabs}${cardHTML(u.cards[0])}</div>`;
 }
 function renderTrack(el,cards,plain){
-  el.className='track'+(plain?' plain':'');
+  el.className='track'+(plain?' plain':'')+(units(cards).some(u=>u.cards.length>1)?' hp':'');
   el.innerHTML=(plain?'':'<div class="sp"></div>')+units(cards).map(unitHTML).join('')+(plain?'':'<div class="sp end"></div>');
 }
 
@@ -623,7 +625,7 @@ function renderTrack(el,cards,plain){
 let risk=0;
 function riskSim(){
   const g=game,n=g.players.length,p=(g.stat.h+5)/(g.stat.t+10);
-  const need=g.players.map(pl=>Math.max(1,10-(pl.board.length-1)));
+  const need=g.players.map(pl=>Math.max(1,10-pl.board.length));
   let run=0;const S=500;
   for(let s=0;s<S;s++){
     const nd=need.slice();let d=g.deck.length,t=g.turn,won=false;
@@ -805,8 +807,8 @@ async function confirmPlace(){
   let idx=0;for(let i=0;i<s;i++)idx+=us[i].cards.length;
   if(ok)P.board.splice(idx,0,t);
   g.res={p:g.turn,ok,idx:ok?idx:-1,y:t.y};
-  g.log.push({p:g.turn,ok,n:P.board.length-1});
-  if(ok&&P.board.length-1>=10)g.winner=g.turn;
+  g.log.push({p:g.turn,ok,n:P.board.length});
+  if(ok&&P.board.length>=10)g.winner=g.turn;
   g.phase='result';saveGame();                       // al confirmar se guarda
   stopAudio(false);
   const my=tTok;
@@ -820,9 +822,9 @@ async function confirmPlace(){
 async function animateResult(t,ok,s,my){
   const sl=async ms=>{await sleep(ms);return my===tTok};
   const trk=$('trk'),us=[...trk.querySelectorAll('.unit')];
-  const front=ok?cardHTML(t,'ok')+'':`<div class="card bad"><div class="era">Era de<b>${t.y}</b></div></div>`;
+  const face=cardHTML(t,ok?'ok':'bad').replace(/<\/div><\/div>$/,`</div><div class="mk">${ok?'✓':'✕'}</div></div>`);
   const ph=document.createElement('div');ph.className='ph';
-  ph.innerHTML=flipHTML(ok?cardHTML(t,'ok').replace('</div></div>','</div><div class="mk">✓</div></div>'):front.replace('<div class="era">','<div class="mk">✕</div><div class="era">'));
+  ph.innerHTML=flipHTML(face);
   trk.insertBefore(ph,us[s]||trk.querySelector('.sp.end'));
   $('mys').classList.add('gone');
   void ph.offsetWidth;ph.classList.add('open');
@@ -862,7 +864,7 @@ function showBoard(v){
 }
 function renderBoard(){
   const g=game,T=g.turn,V=boardView,n=g.players.length,P=g.players[V];
-  $('bWho').innerHTML=`<div class="dot" style="background:${P.color}">${esc(P.ini)}</div><div><div class="nm2">${esc(P.name)}</div><div class="sub">${P.board.length-1} de 10 cartas</div></div>`;
+  $('bWho').innerHTML=`<div class="dot" style="background:${P.color}">${esc(P.ini)}</div><div><div class="nm2">${esc(P.name)}</div><div class="sub">${P.board.length} de 10 cartas</div></div>`;
   $('bTitle').textContent=V!==T?`Viendo el tablero de ${P.name}`:'';
   const after=[];for(let k=1;k<n;k++)after.push((T+k)%n);
   const list=V===T?after:[T,...after.filter(i=>i!==V)];
@@ -888,7 +890,7 @@ function endDeck(){game.phase='end';saveGame();showEnd()}
 function showEnd(){
   const g=game;g.phase='end';saveGame();
   stopAudio(true);
-  const cards=g.players.map(p=>p.board.length-1);
+  const cards=g.players.map(p=>p.board.length);
   let title,sub;
   if(g.winner!==null){title=`<span style="color:${g.players[g.winner].color}">${esc(g.players[g.winner].name)}</span>`;sub='Gana la partida'}
   else{
