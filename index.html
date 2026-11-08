@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
 <meta name="google" content="notranslate">
-<meta name="theme-color" content="#0d0f14">
+<meta name="theme-color" content="#141d38">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" href="icon-192.png">
 <title>Disco Rayado</title>
 <style>
-:root{--ink:#0d0f14;--panel:#161922;--panel2:#1f232d;--line:#2b303c;--text:#eef1f6;--dim:#8d96a7;--red:#f0475a;--blue:#4da3ff;--green:#2ed08b;--amber:#f2b63a;--grad:linear-gradient(100deg,#f0475a,#b05cd6 55%,#4da3ff);--cw:min(98px,22vh);--ch:calc(var(--cw)*1.306)}
+:root{--ink:#141d38;--panel:#1b2646;--panel2:#243158;--line:#34436e;--text:#eef1f6;--dim:#9aa5c2;--red:#f0475a;--blue:#4da3ff;--green:#2ed08b;--amber:#f2b63a;--grad:linear-gradient(100deg,#f0475a,#b05cd6 55%,#4da3ff);--cw:min(98px,22vh);--ch:calc(var(--cw)*1.306)}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;width:100%;overflow:hidden;overscroll-behavior:none;background:var(--ink);color:var(--text);font-family:Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased;user-select:none;-webkit-user-select:none;touch-action:manipulation}
 html{font-size:clamp(12px,3.2vh,17px)}
@@ -90,10 +90,10 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .ptr{position:absolute;top:-.55rem;left:50%;margin-left:-.7rem;border-left:.7rem solid transparent;border-right:.7rem solid transparent;border-top:1.1rem solid #fff;z-index:2;filter:drop-shadow(0 0 4px #000)}
 
 /* cartas */
-.card{width:var(--cw);height:var(--ch);flex:none;position:relative;border-radius:.8rem;background:linear-gradient(160deg,#252a3a,#171a24);border:1.5px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:.5em .35em;text-align:center;font-size:max(10px,calc(var(--cw)*.115));transition:border-color .2s,box-shadow .2s}
+.card{width:var(--cw);height:var(--ch);flex:none;position:relative;border-radius:.8rem;background:linear-gradient(160deg,#2c3860,#1b2442);border:1.5px solid var(--line);display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:.5em .35em;text-align:center;font-size:max(10px,calc(var(--cw)*.115));transition:border-color .2s,box-shadow .2s}
 .ca,.ct{max-width:100%;line-height:1.15;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-word}
 .ca{color:var(--dim)}.ct{font-weight:600}
-.cy{font-size:2.5em;font-weight:800;line-height:1;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+.cy{font-size:2.5em;font-weight:800;line-height:1;background:var(--g,var(--grad));-webkit-background-clip:text;background-clip:text;color:transparent}
 .card.ok{border-color:var(--green);box-shadow:0 0 18px #2ed08b88}
 .card.bad{border-color:var(--red);box-shadow:0 0 18px #f0475a88;background:linear-gradient(160deg,#3a1d24,#1d1217)}
 .card.bad .cy{background:none;color:var(--red)}
@@ -102,7 +102,7 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .card.ok .ca,.card.bad .ca{padding:0 1.4em}
 .era{font-size:1.15em;color:var(--text);line-height:1.3}
 .era b{display:block;font-size:2.2em;color:var(--red);font-weight:800;line-height:1.1}
-.cb{width:var(--cw);height:var(--ch);border-radius:.8rem;background:linear-gradient(160deg,#1f232d,#0d0f14);border:1.5px solid #3a3f52;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 .35rem #14171f}
+.cb{width:var(--cw);height:var(--ch);border-radius:.8rem;background:linear-gradient(160deg,#243158,#141d38);border:1.5px solid #46557f;display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 .35rem #18213f}
 .cb img{width:62%;height:auto;border-radius:22%}
 .fc{width:var(--cw);height:var(--ch);perspective:700px;flex:none;transition:transform .35s,opacity .6s}
 .fi{position:relative;width:100%;height:100%;transform-style:preserve-3d;transition:transform .8s}
@@ -124,7 +124,8 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .track.plain{padding:.2rem .6rem .9rem}
 .sp{flex:none;width:50%}
 .unit{display:flex;flex-direction:column;align-items:center;flex:none}
-.tab{width:var(--cw);font-size:max(10px,calc(var(--cw)*.105));line-height:1.15;padding:.35em .4em .3em;background:linear-gradient(160deg,#252a3a,#171a24);border:1.5px solid var(--line);border-bottom:none;border-radius:.8rem .8rem 0 0;color:var(--dim);text-align:center;white-space:normal;overflow-wrap:anywhere;margin-bottom:-1px;transition:border-color .2s,box-shadow .2s}
+.tab{width:var(--cw);font-size:max(10px,calc(var(--cw)*.105));line-height:1.15;padding:.35em .4em .3em;background:linear-gradient(160deg,#2c3860,#1b2442);border:1.5px solid var(--line);border-bottom:none;border-radius:.8rem .8rem 0 0;color:var(--dim);text-align:center;white-space:normal;overflow-wrap:anywhere;margin-bottom:-1px;transition:border-color .2s,box-shadow .2s}
+.tab .ty{font-weight:800;background:var(--g,var(--grad));-webkit-background-clip:text;background-clip:text;color:transparent}
 .unit.lit .card,.unit.lit .tab{border-color:var(--blue);box-shadow:0 0 14px #4da3ffaa}
 .ph{flex:none;width:0;overflow:hidden;transition:width .45s}
 .ph.open{width:var(--cw)}
@@ -167,7 +168,7 @@ input[type=text]:focus{outline:none;border-color:var(--blue)}
 .card.sp3{border-color:var(--amber);justify-content:center;gap:.3em}
 .cy2{font-size:2.6em;font-weight:800;line-height:1;color:var(--amber)}
 .star{position:absolute;top:.15em;right:.3em;font-size:1.3em;color:var(--amber);line-height:1.1}
-#mSwap{z-index:58;flex-direction:column;gap:1rem;background:#0d0f14}
+#mSwap{z-index:58;flex-direction:column;gap:1rem;background:#141d38}
 #swStage{position:relative;width:var(--cw);height:var(--ch)}
 .shf{position:absolute;inset:0}
 .shf.s1{animation:sh1 .55s ease-in-out infinite}.shf.s2{animation:sh2 .55s ease-in-out infinite}.shf.s3{animation:sh3 .55s ease-in-out infinite}
@@ -218,12 +219,36 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 .frow .fm small{color:var(--dim);display:block;overflow:hidden;text-overflow:ellipsis}
 .frow .fx{color:var(--amber);font-size:.7rem}
 #mEdit,#mFix,#mRev{z-index:55}
+#mConfirm{z-index:57}
+.modal.fm{z-index:52}
+.avb{flex:none;width:2.6rem;height:2.6rem;padding:0;border-radius:50%;font-size:1.35rem;display:flex;align-items:center;justify-content:center;overflow:hidden;line-height:1}
+.avb img{width:100%;height:100%;object-fit:cover}
+.avc{width:3rem;height:3rem;padding:0;font-size:1.5rem;background:var(--panel2);border:2px solid transparent;display:flex;align-items:center;justify-content:center}
+.avc.on{border-color:#fff}
+#avGrid{display:flex;flex-wrap:wrap;gap:.5rem;justify-content:center;margin:.6rem 0}
+#mMenu .panel button{width:100%}
+#mRules .panel{width:min(48rem,97%);max-height:97%;display:flex;flex-direction:column;gap:.5rem}
+#ruBody{display:flex;gap:1rem;align-items:center;text-align:left;min-height:0}
+#ruI{flex:1.2;display:flex;gap:.6rem;align-items:center;justify-content:center;flex-wrap:wrap;background:var(--ink);border:1px solid var(--line);border-radius:1rem;padding:.8rem .5rem;--cw:64px;--ch:84px;min-height:9rem}
+#ruI .unit,#ruI .card,#ruI .cb{flex:none}
+#ruTxt{flex:1}
+#ruTxt h2{font-size:1.1rem;margin-bottom:.4rem}
+#ruTxt .sub{color:var(--text);font-size:.88rem;line-height:1.45}
+#ruNav{display:flex;align-items:center;justify-content:space-between;gap:.6rem}
+#ruDots{display:flex;gap:.3rem}#ruDots i{width:.45rem;height:.45rem;border-radius:50%;background:var(--line)}#ruDots i.on{background:#fff}
+.vm{width:84px;height:84px;flex:none}
+.vm .disc{width:100%;height:100%}
+#tipList,#yrList{max-height:62vh;overflow-y:auto;overscroll-behavior:contain;text-align:left;margin:.4rem 0}
+#tipList h2{color:var(--amber)}
 
 /* turno a ciegas */
 .mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;min-height:0}
-#vin{width:min(36vh,190px);height:min(36vh,190px);display:flex;align-items:center;justify-content:center;transition:transform .18s ease-out}
-#vin img{width:100%;height:100%;border-radius:22%;animation:spin 5s linear infinite;box-shadow:0 0 50px #b05cd655}
-#vin.pz img{animation-play-state:paused}
+#vin{width:min(38vh,200px);height:min(38vh,200px);display:flex;align-items:center;justify-content:center}
+#vin .disc,.disc{position:relative;width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:spin 5s linear infinite;box-shadow:0 0 50px #b05cd655,0 0 0 3px #05070c;
+ background:conic-gradient(from 20deg,#0000 0 18%,#ffffff22 24%,#0000 30% 68%,#ffffff22 74%,#0000 80%),repeating-radial-gradient(circle at 50% 50%,#07090e 0 2px,#151a27 2px 3.5px)}
+#vin .lab,.lab{width:42%;height:42%;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px #07090e;transition:transform .18s ease-out}
+#vin .hole,.hole{position:absolute;left:50%;top:50%;width:6%;height:6%;margin:-3% 0 0 -3%;border-radius:50%;background:#141d38;box-shadow:0 0 0 2px #07090e}
+#vin.pz .disc{animation-play-state:paused}
 @keyframes spin{to{transform:rotate(360deg)}}
 #bdMsg{min-height:1.2rem;text-align:center}
 
@@ -238,7 +263,7 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 .modal.on{display:flex}
 .modal .panel{width:min(26rem,94%);text-align:center}
 .modal .row{justify-content:center;margin-top:.8rem}
-#pause{z-index:60;background:#0d0f14f2;flex-direction:column;gap:.6rem;text-align:center}
+#pause{z-index:60;background:#141d38f2;flex-direction:column;gap:.6rem;text-align:center}
 #pause .big{font-size:1.7rem;font-weight:800}
 #portrait{position:fixed;inset:0;z-index:100;background:var(--ink);display:none;align-items:center;justify-content:center;text-align:center;padding:2rem;font-size:1.1rem;font-weight:700}
 @media (orientation:portrait){#portrait{display:flex}}
@@ -263,7 +288,7 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 
 <div id="sPlay" class="scr">
   <div class="side">
-    <h1>Jugadores</h1>
+    <div class="row"><button class="avb" id="av1"></button><h1>Jugadores</h1></div>
     <div class="sub">Hasta 10 jugadores (mínimo 2). Nombres distintos, de hasta 15 letras. Su color sale por orden de registro.</div>
     <div class="sub" id="plMsg"></div>
     <div class="foot"><button class="g" id="bPlOut">Cerrar sesión</button><button id="bPlNext" class="grow" disabled>Siguiente</button></div>
@@ -273,7 +298,7 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 
 <div id="sMusic" class="scr">
   <div class="panel grow col" style="min-width:0">
-    <div class="row"><input type="text" id="plUrl" placeholder="Pega la URL de una playlist tuya" autocomplete="off" autocapitalize="off" spellcheck="false"><button id="bAdd" class="s">Añadir</button></div>
+    <div class="row"><button class="avb" id="av2"></button><input type="text" id="plUrl" placeholder="Pega la URL de una playlist tuya" autocomplete="off" autocapitalize="off" spellcheck="false"><button id="bAdd" class="s">Añadir</button></div>
     <div class="sub" id="addMsg" style="margin:.3rem 0"></div>
     <div class="grow scroll" id="plList"></div>
   </div>
@@ -326,7 +351,7 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 <div id="sBlind" class="scr">
   <div class="top"><div class="rem" id="remB"></div><div class="who" id="bdWho"></div><button class="g s gearb" id="gear">⚙</button></div>
   <div class="mid">
-    <div id="vin"><img src="icon-512.png" alt=""></div>
+    <div id="vin"><div class="disc"><img class="lab" src="icon-512.png" alt=""><i class="hole"></i></div></div>
     <div class="sub" id="bdMsg"></div>
     <div class="row"><button class="g" id="bPause">Pausa</button><button id="bReveal" disabled>Desvelar y colocar</button><button class="g" id="bRetry" style="display:none">Reintentar</button></div>
   </div>
@@ -383,6 +408,18 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
   </div>
 </div>
 
+
+<div id="mMenu" class="modal fm"><div class="panel col" style="gap:.45rem;max-width:22rem"><h2>Menú</h2>
+  <button class="g" id="mnAv">Modificar avatar</button><button class="g" id="mnRules">Reglas</button><button class="g" id="mnSync">Sincronizar con Spotify</button>
+  <button class="g" id="mnYrs">Años modificados</button><button class="g" id="mnTips">Sugerencias</button><button class="g" id="mnBak">Copia de seguridad</button>
+  <button id="mnClose">Cerrar</button></div></div>
+<div id="mAv" class="modal fm"><div class="panel"><h2>Modificar avatar</h2><div class="sub">Elige uno o usa una foto de tu galería.</div><div id="avGrid"></div><input type="file" id="avFile" accept="image/*" style="display:none"><div class="row"><button class="g" id="avUp">Foto de la galería</button><button id="avClose">Listo</button></div></div></div>
+<div id="mRules" class="modal fm"><div class="panel"><div class="row" style="justify-content:space-between;margin:0"><h2 style="margin:0">Reglas</h2><span class="sub" id="ruN"></span><button class="g s" id="ruX2">✕</button></div>
+  <div id="ruBody"><div id="ruI"></div><div id="ruTxt"><h2 id="ruT"></h2><div class="sub" id="ruX"></div></div></div>
+  <div id="ruNav"><button class="g" id="ruPrev">Anterior</button><div id="ruDots"></div><button id="ruNext">Siguiente</button></div></div></div>
+<div id="mYrs" class="modal fm"><div class="panel"><h2>Años modificados</h2><div class="sub">Correcciones que has hecho. Toca una para editarla o restaurarla.</div><div id="yrList"></div><div class="row"><button id="yrClose">Cerrar</button></div></div></div>
+<div id="mTips" class="modal fm"><div class="panel"><h2>Sugerencias</h2><div id="tipList"></div><div class="row"><button id="tipClose">Cerrar</button></div></div></div>
+<div id="mBak" class="modal fm"><div class="panel col" style="gap:.5rem"><h2>Copia de seguridad</h2><div class="sub">Guarda en un archivo tus playlists, años modificados, avatar e historial de canciones, y restáuralo cuando quieras (por ejemplo en otro móvil).</div><div class="sub" id="bakInfo"></div><input type="file" id="bakFile" accept=".json,application/json" style="display:none"><button id="bakSave">Guardar copia</button><button class="g" id="bakLoad">Restaurar copia</button><button class="g" id="bakClose">Cerrar</button></div></div>
 <div id="mFix" class="modal"><div class="panel"><h2>Corregir años</h2><div class="sub">Toca una canción para cambiar su año. El cambio se recuerda en las próximas partidas; esta partida sigue como terminó.</div><div id="fixList"></div><div class="row"><button id="fxClose">Cerrar</button></div></div></div>
 <div id="mEdit" class="modal"><div class="panel"><h2 id="edT"></h2><div class="sub" id="edS"></div><input type="text" id="edY" inputmode="numeric" maxlength="4" autocomplete="off" style="margin:.5rem 0"><div class="sub bad" id="edE"></div><div class="row"><button class="g" id="edRes">Restaurar</button><button class="g" id="edNo">Cancelar</button><button id="edOk">Guardar</button></div></div></div>
 <div id="mRev" class="modal"><div class="panel col" style="gap:.5rem"><h2>Revancha</h2><button id="rvSame">Mismos jugadores y temas</button><div class="sub">Las canciones que no sonaron salen primero. Fichas a 0.</div><button class="g" id="rvChg">Cambiar aspectos</button><div class="sub">Vuelves a los nombres y luego a las canciones.</div><button class="g" id="rvNo">Cancelar</button></div></div>
@@ -694,7 +731,7 @@ setInterval(()=>{if(cur==='sMusic'&&!document.hidden)devLoop()},8000);
 // ================= Mazo =================
 function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function buildGame(heard){
-  const names=pNames(),n=names.length,all=pool();
+  const names=pNames(),n=names.length,all=pool().map(t=>({...t,gi:Math.floor(Math.random()*GR.length)}));
   const yrs=all.map(t=>t.y);
   const P=heard?shuffle(all.filter(t=>!heard.has(keyOf(t)))).concat(shuffle(all.filter(t=>heard.has(keyOf(t))))):shuffle(all);   // revancha: primero las que no sonaron
   const initial=P.slice(0,n),rest=P.slice(n);
@@ -718,12 +755,14 @@ const saveGame=()=>{if(game){game.saved=Date.now();store.set('dr_game',JSON.stri
 
 // ================= Cartas y línea del tiempo =================
 const backHTML=()=>'<div class="cb"><img src="icon-192.png" alt=""></div>';
-const cardHTML=(c,cls='')=>c.sp?`<div class="card sp3 ${cls}"><div class="ca">Tarjeta especial</div><div class="cy2">3</div><div class="ct">fichas</div></div>`:`<div class="card ${cls}">${c.cj?'<div class="star">★</div>':''}<div class="ca">${esc(c.artist)}</div><div class="cy">${c.y}</div><div class="ct">${esc(c.name)}</div></div>`;
+const GR=['linear-gradient(100deg,#f0475a,#b05cd6 55%,#4da3ff)','linear-gradient(100deg,#ff9a3c,#f0475a)','linear-gradient(100deg,#2ed08b,#4da3ff)','linear-gradient(100deg,#f2b63a,#f0475a 55%,#b05cd6)','linear-gradient(100deg,#6ee7f9,#7c5cff)','linear-gradient(100deg,#b5f04d,#2ed08b)','linear-gradient(100deg,#ff6fb1,#ffb347)','linear-gradient(100deg,#4da3ff,#b05cd6)','linear-gradient(100deg,#f2e84a,#2ed08b 60%,#4da3ff)','linear-gradient(100deg,#ff5f6d,#ffc371)'];
+const gradOf=c=>{let i=c.gi;if(i===undefined){let h=0;const k=keyOf(c);for(let j=0;j<k.length;j++)h=(h*31+k.charCodeAt(j))>>>0;i=h}return GR[i%GR.length]};
+const cardHTML=(c,cls='')=>c.sp?`<div class="card sp3 ${cls}"><div class="ca">Tarjeta especial</div><div class="cy2">3</div><div class="ct">fichas</div></div>`:`<div class="card ${cls}" style="--g:${gradOf(c)}">${c.cj?'<div class="star">★</div>':''}<div class="ca">${esc(c.artist)}</div><div class="cy">${c.y}</div><div class="ct">${esc(c.name)}</div></div>`;
 const flipHTML=front=>`<div class="fc"><div class="fi"><div class="fb">${backHTML()}</div><div class="ff">${front}</div></div></div>`;
 function units(b){const u=[];for(const c of b){const l=u[u.length-1];if(l&&l.y===c.y)l.cards.push(c);else u.push({y:c.y,cards:[c]})}return u}
 function unitHTML(u,i){
   if(u.cards.length===1)return `<div class="unit" data-u="${i}">${cardHTML(u.cards[0])}</div>`;
-  const tabs=u.cards.slice(1).map(c=>`<div class="tab">${c.y} - ${esc(c.artist)} - ${esc(c.name)}</div>`).join('');
+  const tabs=u.cards.slice(1).map(c=>`<div class="tab" style="--g:${gradOf(c)}"><b class="ty">${c.y}</b> - ${esc(c.artist)} - ${esc(c.name)}</div>`).join('');
   return `<div class="unit pile" data-u="${i}">${tabs}${cardHTML(u.cards[0])}</div>`;
 }
 function renderTrack(el,cards,plain){
@@ -810,8 +849,8 @@ async function stopAudio(offRepeat){
   audioOn=false;clearTimeout(watch);stopHb();
   if(deviceState.id){await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}});if(offRepeat)await api('PUT','/me/player/repeat',{query:{state:'off',device_id:deviceState.id}})}
 }
-function startHb(){stopHb();hb=setInterval(()=>{if(manualPause)return;$('vin').style.transform='scale('+(.94+Math.random()*.18)+')'},350+Math.random()*300)}
-function stopHb(){clearInterval(hb);$('vin').style.transform=''}
+function startHb(){stopHb();hb=setInterval(()=>{if(manualPause)return;$('vin').querySelector('.lab').style.transform='scale('+(.8+Math.random()*.5)+')'},350+Math.random()*300)}
+function stopHb(){clearInterval(hb);$('vin').querySelector('.lab').style.transform=''}
 function note(html){$('bdMsg').innerHTML=html;if(cur==='sPlace'&&!resolving&&$('plHint'))$('plHint').innerHTML=html}
 
 // ================= Turno a ciegas =================
@@ -1150,6 +1189,7 @@ function showEnd(){
     }
     saveGame();
   }
+  if(!g.histDone){g.histDone=true;recordHist();saveGame()}
   stopAudio(true);
   const W=g.winners,one=W.length===1;
   $('enSub').textContent=g.how==='cards'?'Se acabó el mazo':g.how==='tie'?'Desempate':g.how==='none'?'Empate':'Fin de la partida';
@@ -1213,7 +1253,7 @@ function drawChart(){
   const ymax=Math.max(10,...pts.map(a=>Math.max(...a)));
   const X=i=>L+(N<2?0:i/(N-1))*(W-L-R),Y=v=>H-B-(v/ymax)*(H-B-T);
   let s=`<svg viewBox="0 0 ${W} ${H}" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="cl"><rect id="clr" x="0" y="0" width="0" height="${H}"/></clipPath></defs>`;
-  [0,5,10].filter(v=>v<=ymax).forEach(v=>{s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#2b303c" stroke-width="1"/><text x="${L-5}" y="${Y(v)+4}" fill="#8d96a7" font-size="10" text-anchor="end">${v}</text>`});
+  [0,5,10].filter(v=>v<=ymax).forEach(v=>{s+=`<line x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}" stroke="#34436e" stroke-width="1"/><text x="${L-5}" y="${Y(v)+4}" fill="#8d96a7" font-size="10" text-anchor="end">${v}</text>`});
   const step=Math.max(1,Math.ceil(N/14));
   for(let i=0;i<N;i++){if(i%step&&i!==N-1)continue;const lab=i===0?'Ini':(i===N-1&&pts[i].join()===g.players.map(p=>p.board.length).join()&&g.players.some(p=>p.board.some(c=>c.sp)))?'Fin':i;s+=`<text x="${X(i)}" y="${H-5}" fill="#8d96a7" font-size="10" text-anchor="middle">${lab}</text>`}
   s+='<g clip-path="url(#cl)">';
@@ -1226,7 +1266,7 @@ function drawChart(){
   marks.forEach(m=>{
     const x=Math.min(m.x,N-1),key=x+'|'+m.p,j=stack[key]=(stack[key]||0)+1;
     const col=m.k==='✕'?'#f0475a':m.k==='★'?'#f2b63a':'#ffffff';
-    s+=`<text x="${X(x)}" y="${Y(pts[x][m.p])-6-(j-1)*11+(m.p-(n-1)/2)*1.4}" fill="${col}" font-size="11" font-weight="800" text-anchor="middle" stroke="#161922" stroke-width="2.5" paint-order="stroke">${m.k}</text>`;
+    s+=`<text x="${X(x)}" y="${Y(pts[x][m.p])-6-(j-1)*11+(m.p-(n-1)/2)*1.4}" fill="${col}" font-size="11" font-weight="800" text-anchor="middle" stroke="#1b2646" stroke-width="2.5" paint-order="stroke">${m.k}</text>`;
   });
   s+='</g></svg>';
   box.innerHTML=s;
@@ -1366,13 +1406,14 @@ function openFix(){
 }
 let editCard=null;
 function openEdit(c){
-  editCard=c;const k=keyOf(c);
+  editCard=c;const k=c._k||keyOf(c);
   $('edT').textContent=c.name;$('edS').textContent=`${c.artist} · ahora: ${c.y}`+(fixes[k]?' (corregido a mano)':'');
   $('edY').value=c.y;$('edE').textContent='';$('edRes').style.display=fixes[k]?'':'none';
   $('mEdit').classList.add('on');
 }
 function applyYear(c,y){
-  const k=keyOf(c),all=[];
+  if(!game)return;
+  const k=c._k||keyOf(c),all=[];
   game.players.forEach(p=>p.board.forEach(x=>all.push(x)));game.failed.forEach(x=>all.push(x));all.push(...game.reserve);if(game.tb&&game.tb.song)all.push(game.tb.song);
   all.forEach(x=>{if(!x.sp&&x.artist&&keyOf(x)===k)x.y=y});
   saveGame();
@@ -1380,18 +1421,18 @@ function applyYear(c,y){
 $('edOk').onclick=()=>{
   const y=parseInt($('edY').value.trim(),10);
   if(!/^\d{4}$/.test($('edY').value.trim())||y<1900||y>curYear()){$('edE').textContent='Escribe un año de 4 cifras entre 1900 y '+curYear()+'.';return}
-  const k=keyOf(editCard);fixes[k]=y;store.set('dr_fix',JSON.stringify(fixes));
+  const k=editCard._k||keyOf(editCard);fixes[k]=y;fixm[k]={n:editCard.name,a:editCard.artist};store.set('dr_fix',JSON.stringify(fixes));store.set('dr_fixm',JSON.stringify(fixm));
   applyYear(editCard,y);$('mEdit').classList.remove('on');
   toast('Año guardado: '+y+'. Se usará en las próximas partidas.');
   refreshFinal();
 };
 $('edRes').onclick=()=>{
-  const k=keyOf(editCard);delete fixes[k];store.set('dr_fix',JSON.stringify(fixes));
-  applyYear(editCard,effYear(editCard)||editCard.y);$('mEdit').classList.remove('on');
+  const k=editCard._k||keyOf(editCard);delete fixes[k];delete fixm[k];store.set('dr_fix',JSON.stringify(fixes));store.set('dr_fixm',JSON.stringify(fixm));
+  if(!editCard._k)applyYear(editCard,effYear(editCard)||editCard.y);$('mEdit').classList.remove('on');
   toast('Año restaurado.');refreshFinal();
 };
 $('edNo').onclick=()=>$('mEdit').classList.remove('on');
-function refreshFinal(){if($('mFix').classList.contains('on'))openFix();if(cur==='sEnd')endView(endSel)}
+function refreshFinal(){if($('mYrs').classList.contains('on'))openYrs();if($('mFix').classList.contains('on'))openFix();if(cur==='sEnd')endView(endSel)}
 $('bFixes').onclick=openFix;
 $('fxClose').onclick=()=>$('mFix').classList.remove('on');
 
@@ -1486,6 +1527,189 @@ function confirmBox(t,b,yes,infoOnly){
   $('mcYes').onclick=()=>{$('mConfirm').classList.remove('on');yes&&yes()};
   $('mcNo').onclick=()=>$('mConfirm').classList.remove('on');
 }
+
+// ================= Fase 5: menú del avatar =================
+let avatar=jget('dr_av',null);
+let fixm=jget('dr_fixm',{});           // datos legibles de las correcciones: clave -> {n,a}
+let hist=jget('dr_hist',{});           // historial de canciones jugadas: clave -> {n,a,c,l}
+const AVS=['🎧','🎸','🎤','🎹','🥁','🎷','🎺','🎻','💿','🕺','👾','🔥'];
+function renderAv(){
+  document.querySelectorAll('.avb').forEach(b=>{
+    b.innerHTML=avatar&&avatar.img?`<img src="${avatar.img}" alt="">`:`<span>${avatar&&avatar.e?avatar.e:'🎧'}</span>`;
+  });
+}
+function openMenu(){$('mMenu').classList.add('on')}
+const closeAll=()=>document.querySelectorAll('.modal.fm').forEach(m=>m.classList.remove('on'));
+// ---- avatar
+function openAv(){
+  $('avGrid').innerHTML=AVS.map(e=>`<button class="avc ${avatar&&avatar.e===e?'on':''}" data-e="${e}">${e}</button>`).join('');
+  $('avGrid').querySelectorAll('.avc').forEach(b=>b.onclick=()=>{avatar={e:b.dataset.e};store.set('dr_av',JSON.stringify(avatar));renderAv();openAv()});
+  $('mAv').classList.add('on');
+}
+$('avFile').onchange=e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    const im=new Image();
+    im.onload=()=>{
+      const S=160,c=document.createElement('canvas');c.width=c.height=S;
+      const m=Math.min(im.width,im.height),sx=(im.width-m)/2,sy=(im.height-m)/2;
+      c.getContext('2d').drawImage(im,sx,sy,m,m,0,0,S,S);
+      avatar={img:c.toDataURL('image/jpeg',.82)};store.set('dr_av',JSON.stringify(avatar));renderAv();openAv();
+    };
+    im.onerror=()=>toast('No se pudo leer esa imagen');
+    im.src=rd.result;
+  };
+  rd.readAsDataURL(f);e.target.value='';
+};
+// ---- Reglas (10 pantallas con ilustración)
+const mini=(y,a,n,cls,g)=>cardHTML({y,artist:a,name:n,gi:g},cls);
+const mk=(h,c)=>h.replace(/<\/div>$/,`<div class="mk">${c}</div></div>`);
+const RULES=[
+ ['Objetivo','Gana quien consiga <b>10 cartas</b> en su línea del tiempo (la carta inicial de regalo cuenta). En cuanto alguien coloca bien su carta 10, gana al instante.',
+  ()=>`${mini(1965,'Artista','Canción',' ',0)}${mini(1978,'Artista','Canción',' ',2)}${mini(1991,'Artista','Canción',' ',4)}<div class="ybig" style="align-self:center">…10</div>`],
+ ['Escucha, coloca y confirma','En tu turno suena una canción oculta. Escúchala, pulsa «Desvelar y colocar», arrastra la carta incógnita al hueco que creas correcto y pulsa «Confirmar posición».',
+  ()=>`<div class="vm"><div class="disc" style="animation:none"><img class="lab" src="icon-192.png" alt=""><i class="hole"></i></div></div><div class="ybig" style="align-self:center">›</div><div class="cb">${'<img src="icon-192.png" alt="">'}</div><div class="ybig" style="align-self:center">›</div><button class="s" style="align-self:center">Confirmar posición</button>`],
+ ['De la más antigua a la más reciente','Tu línea va de izquierda (más antigua) a derecha (más reciente). La carta debe quedar entre dos años que la encajen.',
+  ()=>`${mini(1971,'Artista','Canción',' ',1)}${mini(1988,'Artista','Canción',' ',3)}<div class="cb" style="border-color:var(--blue);box-shadow:0 0 14px #4da3ffaa"><img src="icon-192.png" alt=""></div>${mini(2009,'Artista','Canción',' ',5)}`],
+ ['Acierto o fallo','Si aciertas, la carta se queda en tu línea con un ✓ verde. Si fallas, se gira en rojo con una ✕, se muestra su año y se descarta.',
+  ()=>`${mk(mini(1984,'Artista','Canción','ok',2),'✓')}${mk(mini(1997,'Artista','Canción','bad',0),'✕')}`],
+ ['Años repetidos: la pila','Si dos cartas son del mismo año se apilan y cuentan como un solo hueco. La pestaña muestra año, artista y título. Si la canción es de ese año, vale cualquiera de los dos huecos pegados a la pila.',
+  ()=>`${mini(1975,'Artista','Canción',' ',6)}${unitHTML({y:1990,cards:[{y:1990,artist:'Artista',name:'Canción',gi:7},{y:1990,artist:'Otro',name:'Otra canción',gi:8}]},0)}${mini(2003,'Artista','Canción',' ',9)}`],
+ ['Fichas: cómo se ganan','Di en voz alta artista y título antes de desvelar. Si aciertas la colocación, otro jugador lo confirma y pulsas «Dar Ficha». Tras un fallo no se pregunta.',
+  ()=>`<span class="coin tk" style="width:3rem;height:3rem;align-self:center"></span><div class="col" style="gap:.5rem;align-self:center"><button class="s">Dar Ficha</button><button class="g s">No</button></div>`],
+ ['Robar con una ficha','Si otro jugador tiene fichas, antes de desvelar sale «¿Alguien se la juega?». Quien quiere robar toca su círculo y pone su ficha en un hueco libre. Si el del turno falla y el ladrón acierta, se queda la carta; si no, pierde la ficha.',
+  ()=>`<button class="cir" style="background:#56B4E9;align-self:center;width:3rem;height:3rem">L<i class="bdg">2</i></button><div class="ybig" style="align-self:center">›</div>${mini(1980,'Artista','Canción',' ',0)}<div class="gp" style="align-self:center;margin:0"><div class="coin" style="background:#56B4E9">L</div></div>${mini(2005,'Artista','Canción',' ',4)}`],
+ ['Canjear 3 fichas por una carta','Con 3 fichas puedes canjear una carta gratis: sale del mazo, se coloca sola con una ★ y cuenta para los 10. Solo en tu turno: antes de escuchar la canción, o con «Canjear fichas» tras desvelar.',
+  ()=>`<span class="coin tk" style="width:2.4rem;height:2.4rem;align-self:center"></span><span class="coin tk" style="width:2.4rem;height:2.4rem;align-self:center"></span><span class="coin tk" style="width:2.4rem;height:2.4rem;align-self:center"></span><div class="ybig" style="align-self:center">›</div>${cardHTML({y:1994,artist:'Artista',name:'Canción',gi:3,cj:true},'gold')}`],
+ ['Si se acaba el mazo','Gana quien tenga más cartas. Cada 3 fichas sin canjear suman una tarjeta especial «3 fichas». Si hay empate, suena una canción: cada empatado elige en secreto un año con la rueda y gana el más cercano.',
+  ()=>`${cardHTML({sp:true})}<div class="col" style="align-self:center;align-items:center"><div class="yptr">▼</div><div class="ybig">1987</div></div>`],
+ ['Pausa y avisos','Si sales de la app, la música se detiene y la partida queda en pausa; al volver, pulsa «Continuar». Si Spotify se cierra, sale un aviso para reintentar.',
+  ()=>`<div class="col" style="align-items:center;gap:.5rem;align-self:center"><div style="font-weight:800;font-size:1.3rem">Partida en pausa</div><button class="s">Continuar</button></div>`],
+];
+let rulePg=0;
+function openRules(p){
+  rulePg=p||0;const R=RULES[rulePg];
+  $('ruN').textContent=`${rulePg+1} de ${RULES.length}`;
+  $('ruT').textContent=R[0];$('ruX').innerHTML=R[1];$('ruI').innerHTML=R[2]();
+  $('ruDots').innerHTML=RULES.map((_,i)=>`<i class="${i===rulePg?'on':''}"></i>`).join('');
+  $('ruPrev').style.visibility=rulePg?'visible':'hidden';
+  $('ruNext').textContent=rulePg===RULES.length-1?'Cerrar':'Siguiente';
+  $('mRules').classList.add('on');
+}
+$('ruPrev').onclick=()=>openRules(rulePg-1);
+$('ruNext').onclick=()=>{if(rulePg===RULES.length-1)$('mRules').classList.remove('on');else openRules(rulePg+1)};
+$('ruX2').onclick=()=>$('mRules').classList.remove('on');
+// ---- Años modificados
+const origYear=c=>{const k=keyOf(c),m=mbCache[k];return (m&&c.year)?Math.min(c.year,m):(c.year||m||null)};
+function openYrs(){
+  const ks=Object.keys(fixes);
+  $('yrList').innerHTML=ks.length?ks.map(k=>{
+    const m=fixm[k],p=k.split('|'),nm=m?m.n:p[1],ar=m?m.a:p[0];
+    return `<div class="frow" data-k="${esc(k)}"><div class="fy">${fixes[k]}</div><div class="fm">${esc(nm)}<small>${esc(ar)}</small></div><div class="fx">editar</div></div>`;
+  }).join(''):'<div class="sub" style="padding:.6rem 0">Aún no has corregido ningún año. Se hace al final de una partida, con «Corregir años».</div>';
+  $('yrList').querySelectorAll('.frow').forEach(r=>r.onclick=()=>{
+    const k=r.dataset.k,m=fixm[k],p=k.split('|');
+    openEdit({name:m?m.n:p[1],artist:m?m.a:p[0],y:fixes[k],_k:k});
+  });
+  $('mYrs').classList.add('on');
+}
+// ---- Sugerencias
+const TIPS=[
+ ['Antes de jugar',['Abre Spotify en este móvil y deja que suene o pausa algo: así aparece como dispositivo.','Silencia los avisos: activa No molestar (o bloquea las notificaciones con Game Booster) para que no salga el título de la canción.','Pon la batería de Spotify en «Sin restricciones»: Ajustes → Aplicaciones → Spotify → Batería → Sin restricciones.','Instala Disco Rayado (opcional): menú de Chrome → Instalar aplicación, o Añadir a pantalla de inicio.']],
+ ['Durante la partida',['Baja el brillo y activa el ahorro de batería si la partida va a ser larga.','Ajusta el volumen desde Spotify o los botones del móvil.','Desconecta el Bluetooth de coche o altavoz con pantalla: podrían mostrar el título de la canción.','Si sales de la app, la música se detiene y todo queda en pausa hasta que pulses «Continuar».']],
+ ['Si algo falla',['Spotify cerrado: ábrelo y toca «Reintentar».','La canción no suena: toca el engranaje ⚙ y «Saltar canción» (solo aparece si el audio no avanza).','Sesión caducada: vuelve a conectar con Spotify; la partida se guarda y se retoma.']],
+ ['Tus datos',['«Años modificados» muestra las correcciones de año que has hecho y te deja editarlas o restaurarlas.','«Copia de seguridad» guarda en un archivo tus playlists, años modificados, avatar e historial, y los restaura cuando quieras.']],
+];
+function openTips(){
+  $('tipList').innerHTML=TIPS.map(s=>`<h2 style="margin-top:.6rem">${s[0]}</h2>${s[1].map(t=>`<div class="chk"><b>•</b><div class="sub" style="color:var(--text)">${t}</div></div>`).join('')}`).join('');
+  $('mTips').classList.add('on');
+}
+// ---- Sincronizar con Spotify
+let syncing=false;
+async function fetchTracks(id){
+  const tracks=[];let base='/playlists/'+id+'/items',off=0,tried=false;
+  for(;;){
+    let r=await api('GET',base,{query:{limit:50,offset:off,additional_types:'track'}});
+    if((r.status===404||r.status===400)&&!tried&&off===0){tried=true;base='/playlists/'+id+'/tracks';r=await api('GET',base,{query:{limit:50,offset:off}})}
+    if(r.status!==200)return{fail:r.err||r.status};
+    for(const it of (r.data.items||[])){
+      const t=it.item||it.track;
+      if(!t||t.is_local||(t.type&&t.type!=='track')||t.is_playable===false||!t.uri||!t.uri.startsWith('spotify:track:'))continue;
+      tracks.push({uri:t.uri,name:t.name,artist:(t.artists||[]).map(a=>a.name).join(', '),album:(t.album&&t.album.name)||'',comp:(t.album&&t.album.album_type)==='compilation',year:parseInt(((t.album&&t.album.release_date)||'').slice(0,4))||null});
+    }
+    if(!r.data.next||!(r.data.items||[]).length)break;off+=50;
+  }
+  return{tracks};
+}
+async function syncSpotify(){
+  if(syncing)return;
+  if(!tok){toast('Conecta primero con Spotify');return}
+  if(!setup.pls.length){toast('No hay playlists que sincronizar');return}
+  syncing=true;$('mMenu').classList.remove('on');
+  let add=0,del=0,bad=0,i=0;
+  for(const p of setup.pls){
+    i++;toast(`Sincronizando ${i} de ${setup.pls.length}: ${p.name}`,60000);
+    const r=await fetchTracks(p.id);
+    if(r.fail){bad++;continue}
+    const old=new Set(p.tracks.map(t=>t.uri)),nu=new Set(r.tracks.map(t=>t.uri));
+    r.tracks.forEach(t=>{if(!old.has(t.uri))add++});p.tracks.forEach(t=>{if(!nu.has(t.uri))del++});
+    p.tracks=r.tracks;
+  }
+  saveSetup();syncing=false;
+  toast(bad?`Sincronizado con ${bad} playlist(s) que no se pudieron leer. +${add} / −${del} canciones`:`Sincronizado: +${add} nuevas, −${del} quitadas`,5000);
+  if(cur==='sMusic')renderMusic();
+  mbRun();
+}
+// ---- Copia de seguridad
+function backupData(){return{app:'disco-rayado',v:1,date:new Date().toISOString(),setup:{names:setup.names,pls:setup.pls,prep:setup.prep},fixes,fixm,mb:mbCache,avatar,hist}}
+function saveBackup(){
+  const blob=new Blob([JSON.stringify(backupData())],{type:'application/json'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);
+  a.download='disco-rayado-copia-'+new Date().toISOString().slice(0,10)+'.json';
+  document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+  toast('Copia guardada en Descargas');
+}
+function restoreBackup(d){
+  setup={names:Array.isArray(d.setup.names)&&d.setup.names.length?d.setup.names:[''],pls:Array.isArray(d.setup.pls)?d.setup.pls:[],prep:!!d.setup.prep};
+  fixes=d.fixes&&typeof d.fixes==='object'?d.fixes:{};fixm=d.fixm&&typeof d.fixm==='object'?d.fixm:{};
+  mbCache=d.mb&&typeof d.mb==='object'?d.mb:{};avatar=d.avatar||null;hist=d.hist&&typeof d.hist==='object'?d.hist:{};
+  saveSetup();store.set('dr_fix',JSON.stringify(fixes));store.set('dr_fixm',JSON.stringify(fixm));store.set('dr_mb',JSON.stringify(mbCache));
+  store.set('dr_av',JSON.stringify(avatar));store.set('dr_hist',JSON.stringify(hist));
+  renderAv();renderPlayers();if(cur==='sMusic')renderMusic();
+}
+$('bakFile').onchange=e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  const rd=new FileReader();
+  rd.onload=()=>{
+    let d=null;try{d=JSON.parse(rd.result)}catch(_){}
+    if(!d||d.app!=='disco-rayado'||!d.setup){toast('Ese archivo no es una copia de Disco Rayado');return}
+    confirmBox('¿Restaurar esta copia?',`Se sustituyen tus playlists (${(d.setup.pls||[]).length}), años modificados (${Object.keys(d.fixes||{}).length}), avatar e historial por los de la copia.`,()=>{restoreBackup(d);$('mBak').classList.remove('on');toast('Copia restaurada')});
+  };
+  rd.readAsText(f);e.target.value='';
+};
+function recordHist(){
+  const now=new Date().toISOString().slice(0,10);
+  gameSongs().forEach(c=>{const k=keyOf(c),h=hist[k]||{n:c.name,a:c.artist,c:0};h.c++;h.l=now;hist[k]=h});
+  store.set('dr_hist',JSON.stringify(hist));
+}
+// ---- eventos de los menús
+$('av1').onclick=openMenu;$('av2').onclick=openMenu;
+$('mnClose').onclick=()=>$('mMenu').classList.remove('on');
+$('mnAv').onclick=()=>{$('mMenu').classList.remove('on');openAv()};
+$('mnRules').onclick=()=>{$('mMenu').classList.remove('on');openRules(0)};
+$('mnSync').onclick=syncSpotify;
+$('mnYrs').onclick=()=>{$('mMenu').classList.remove('on');openYrs()};
+$('mnTips').onclick=()=>{$('mMenu').classList.remove('on');openTips()};
+$('mnBak').onclick=()=>{$('mMenu').classList.remove('on');$('bakInfo').textContent=`Incluye ${setup.pls.length} playlist(s), ${Object.keys(fixes).length} año(s) modificado(s) y ${Object.keys(hist).length} canción(es) en el historial.`;$('mBak').classList.add('on')};
+$('bakSave').onclick=saveBackup;
+$('bakLoad').onclick=()=>$('bakFile').click();
+$('bakClose').onclick=()=>$('mBak').classList.remove('on');
+$('avUp').onclick=()=>$('avFile').click();
+$('avClose').onclick=()=>$('mAv').classList.remove('on');
+$('yrClose').onclick=()=>$('mYrs').classList.remove('on');
+$('tipClose').onclick=()=>$('mTips').classList.remove('on');
+renderAv();
 
 // ================= Eventos =================
 $('bLogin').onclick=login;
