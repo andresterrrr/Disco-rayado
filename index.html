@@ -254,6 +254,22 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 .ar2{inset:-12%;border-bottom-color:#232c48;border-left-color:#232c48;animation:rev 20s linear infinite}
 @keyframes rev{to{transform:rotate(-360deg)}}
 #vin.pz .disc{animation-play-state:paused}
+/* turno a ciegas: distribución horizontal */
+#sBlind .bmid{flex:1;min-height:0;display:flex;align-items:center;justify-content:space-between;gap:.8rem;padding:0 .4rem}
+#sBlind .bl,#sBlind .br{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;min-width:0}
+#sBlind .bl{align-items:flex-start;padding-left:.6rem}
+#sBlind .br{align-items:flex-start;padding-left:2rem}
+#sBlind .bt{font-weight:700;font-size:1.05rem;text-align:left;max-width:12rem}
+#sBlind #vin{width:min(60vh,340px);height:min(60vh,340px);flex:none}
+#sBlind .bbot{flex:none;display:flex;justify-content:center;padding-bottom:.3rem}
+.pb{width:3.6rem;height:3.6rem;border-radius:50%;padding:0;display:flex;align-items:center;justify-content:center;background:var(--panel);border:2px solid transparent;background-image:linear-gradient(var(--panel),var(--panel)),linear-gradient(100deg,#f0475a,#4da3ff);background-origin:border-box;background-clip:padding-box,border-box;box-shadow:none}
+.pb svg{width:1.4rem;height:1.4rem;fill:#fff}
+.eq{display:flex;align-items:flex-end;gap:4px;height:1.8rem}
+.eq i{width:5px;border-radius:3px;background:linear-gradient(#f0475a,#4da3ff);animation:eqb 1s ease-in-out infinite}
+.eq i:nth-child(1){animation-delay:-.2s}.eq i:nth-child(2){animation-delay:-.6s}.eq i:nth-child(3){animation-delay:-.4s}.eq i:nth-child(4){animation-delay:-.8s}.eq i:nth-child(5){animation-delay:-.1s}
+@keyframes eqb{0%,100%{height:25%}50%{height:100%}}
+#sBlind.pz .eq i{animation-play-state:paused}
+@media (orientation:portrait){#sBlind .bmid{flex-direction:column;justify-content:center}#sBlind #vin{width:min(62vw,320px);height:min(62vw,320px)}#sBlind .bl,#sBlind .br{flex:none;align-items:center;padding:0}}
 @keyframes spin{to{transform:rotate(360deg)}}
 #bdMsg{min-height:1.2rem;text-align:center}
 
@@ -355,11 +371,12 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 <!-- Turno a ciegas -->
 <div id="sBlind" class="scr">
   <div class="top"><div class="rem" id="remB"></div><div class="who" id="bdWho"></div><button class="g s gearb" id="gear">⚙</button></div>
-  <div class="mid">
-    <div id="vin"><i class="arc ar1"></i><i class="arc ar2"></i><div class="disc"><div class="lbl"></div></div></div>
-    <div class="sub" id="bdMsg"></div>
-    <div class="row"><button class="g" id="bPause">Pausa</button><button id="bReveal" disabled>Desvelar y colocar</button><button class="g" id="bRetry" style="display:none">Reintentar</button></div>
+  <div class="bmid">
+    <div class="bl"><div class="eq"><i></i><i></i><i></i><i></i><i></i></div><div class="bt" id="bdMsg"></div><button class="g s" id="bRetry" style="display:none">Reintentar</button></div>
+    <div id="vin"><div class="disc"><div class="lbl"></div></div></div>
+    <div class="br"><button class="pb" id="bPause" aria-label="Pausa"></button></div>
   </div>
+  <div class="bbot"><button id="bReveal" disabled>Desvelar y colocar</button></div>
 </div>
 
 <!-- Escuchar o canjear -->
@@ -856,6 +873,8 @@ async function stopAudio(offRepeat){
 }
 function startHb(){stopHb();hb=setInterval(()=>{if(manualPause)return;$('vin').querySelector('.lab').style.transform='scale('+(.88+Math.random()*.26)+')'},350+Math.random()*300)}
 function stopHb(){clearInterval(hb);$('vin').querySelector('.lab').style.transform=''}
+const ICP='<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>',ICL='<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>';
+function setPB(p){$('bPause').innerHTML=p?ICL:ICP;$('bPause').setAttribute('aria-label',p?'Seguir':'Pausa');$('vin').classList.toggle('pz',p);$('sBlind').classList.toggle('pz',p)}
 function note(html){$('bdMsg').innerHTML=html;if(cur==='sPlace'&&!resolving&&$('plHint'))$('plHint').innerHTML=html}
 
 // ================= Turno a ciegas =================
@@ -909,7 +928,7 @@ async function startTurn(autoPlace,skipPre){
   const P=g.players[g.turn];
   $('remB').innerHTML=remHTML();
   $('bdWho').innerHTML=`<b>Turno de <span style="color:${P.color}">${esc(P.name)}</span></b>`;
-  manualPause=false;$('bPause').textContent='Pausa';$('vin').classList.remove('pz');
+  manualPause=false;setPB(false);
   show('sBlind');
   if(g.deck.length===g.players.length&&!g.lastWarn){g.lastWarn=true;saveGame();toast('Última ronda: queda una canción por jugador')}
   await beginAudio(autoPlace,my);
@@ -920,7 +939,7 @@ async function beginAudio(autoPlace,my){
   const r=await playTrack(np);
   if(my!==tTok)return;
   if(!r.ok){note('<span class="warn">'+esc(r.msg)+'</span>');$('bRetry').style.display='';if(r.tech)skipOk=true;return}
-  audioOn=true;$('bdMsg').textContent='Escucha y piensa…';$('bReveal').disabled=false;startHb();
+  audioOn=true;$('bdMsg').textContent='Escuchando';$('bReveal').disabled=false;startHb();
   clearTimeout(watch);
   watch=setTimeout(async()=>{
     if(my!==tTok||manualPause||!audioOn)return;
@@ -932,15 +951,15 @@ async function beginAudio(autoPlace,my){
 }
 async function togglePause(){
   if(!deviceState.id)return;
-  if(!manualPause){manualPause=true;$('bPause').textContent='Seguir';$('vin').classList.add('pz');await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}})}
-  else{manualPause=false;$('bPause').textContent='Pausa';$('vin').classList.remove('pz');await api('PUT','/me/player/play',{query:{device_id:deviceState.id}})}
+  if(!manualPause){manualPause=true;setPB(true);await api('PUT','/me/player/pause',{query:{device_id:deviceState.id}})}
+  else{manualPause=false;setPB(false);await api('PUT','/me/player/play',{query:{device_id:deviceState.id}})}
 }
 
 // ================= Colocación =================
 function toPlace(){
   const g=game,P=g.players[g.turn];
   g.phase='place';saveGame();
-  if(manualPause){manualPause=false;$('bPause').textContent='Pausa';$('vin').classList.remove('pz');if(deviceState.id)api('PUT','/me/player/play',{query:{device_id:deviceState.id}})}
+  if(manualPause){manualPause=false;setPB(false);if(deviceState.id)api('PUT','/me/player/play',{query:{device_id:deviceState.id}})}
   stopHb();resolving=false;pl={slot:0,dx:0,chosen:false};
   $('plWho').innerHTML=`<b>Turno de <span style="color:${P.color}">${esc(P.name)}</span></b><div class="sub" id="plHint">Desliza la línea o arrastra la carta al hueco que creas correcto.</div>`;
   $('remP').innerHTML=remHTML();
