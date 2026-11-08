@@ -244,9 +244,9 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 /* turno a ciegas */
 .mid{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.6rem;min-height:0}
 #vin{width:min(38vh,200px);height:min(38vh,200px);display:flex;align-items:center;justify-content:center}
-#vin .disc,.disc{position:relative;width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:spin 5s linear infinite;box-shadow:0 0 50px #b05cd655,0 0 0 3px #05070c;
- background:conic-gradient(from 20deg,#0000 0 18%,#ffffff22 24%,#0000 30% 68%,#ffffff22 74%,#0000 80%),repeating-radial-gradient(circle at 50% 50%,#07090e 0 2px,#151a27 2px 3.5px)}
-#vin .lab,.lab{width:42%;height:42%;border-radius:50%;object-fit:cover;box-shadow:0 0 0 3px #07090e;transition:transform .18s ease-out}
+#vin .disc,.disc{position:relative;width:100%;height:100%;border-radius:50%;display:flex;align-items:center;justify-content:center;animation:spin 5s linear infinite;box-shadow:0 0 50px #b05cd666,0 0 0 3px #05070c;
+ background:conic-gradient(from 20deg,#0000 0 18%,#ffffff55 24%,#0000 30% 68%,#ffffff55 74%,#0000 80%),repeating-radial-gradient(circle at 50% 50%,#0000 0 2px,#0003 2px 3.5px),conic-gradient(from 0deg,#f0475a,#b05cd6,#4da3ff,#b05cd6,#f0475a)}
+#vin .lab,.lab{width:48%;height:48%;border-radius:50%;object-fit:cover;background:#0b0e18;box-shadow:0 0 0 3px #07090e;transition:transform .18s ease-out}
 #vin .hole,.hole{position:absolute;left:50%;top:50%;width:6%;height:6%;margin:-3% 0 0 -3%;border-radius:50%;background:#141d38;box-shadow:0 0 0 2px #07090e}
 #vin.pz .disc{animation-play-state:paused}
 @keyframes spin{to{transform:rotate(360deg)}}
@@ -351,7 +351,7 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
 <div id="sBlind" class="scr">
   <div class="top"><div class="rem" id="remB"></div><div class="who" id="bdWho"></div><button class="g s gearb" id="gear">⚙</button></div>
   <div class="mid">
-    <div id="vin"><div class="disc"><img class="lab" src="icon-512.png" alt=""><i class="hole"></i></div></div>
+    <div id="vin"><div class="disc"><img class="lab" src="icon-512.png" alt=""></div></div>
     <div class="sub" id="bdMsg"></div>
     <div class="row"><button class="g" id="bPause">Pausa</button><button id="bReveal" disabled>Desvelar y colocar</button><button class="g" id="bRetry" style="display:none">Reintentar</button></div>
   </div>
@@ -1569,7 +1569,7 @@ const RULES=[
  ['Objetivo','Gana quien consiga <b>10 cartas</b> en su línea del tiempo (la carta inicial de regalo cuenta). En cuanto alguien coloca bien su carta 10, gana al instante.',
   ()=>`${mini(1965,'Artista','Canción',' ',0)}${mini(1978,'Artista','Canción',' ',2)}${mini(1991,'Artista','Canción',' ',4)}<div class="ybig" style="align-self:center">…10</div>`],
  ['Escucha, coloca y confirma','En tu turno suena una canción oculta. Escúchala, pulsa «Desvelar y colocar», arrastra la carta incógnita al hueco que creas correcto y pulsa «Confirmar posición».',
-  ()=>`<div class="vm"><div class="disc" style="animation:none"><img class="lab" src="icon-192.png" alt=""><i class="hole"></i></div></div><div class="ybig" style="align-self:center">›</div><div class="cb">${'<img src="icon-192.png" alt="">'}</div><div class="ybig" style="align-self:center">›</div><button class="s" style="align-self:center">Confirmar posición</button>`],
+  ()=>`<div class="vm"><div class="disc" style="animation:none"><img class="lab" src="icon-192.png" alt=""></div></div><div class="ybig" style="align-self:center">›</div><div class="cb">${'<img src="icon-192.png" alt="">'}</div><div class="ybig" style="align-self:center">›</div><button class="s" style="align-self:center">Confirmar posición</button>`],
  ['De la más antigua a la más reciente','Tu línea va de izquierda (más antigua) a derecha (más reciente). La carta debe quedar entre dos años que la encajen.',
   ()=>`${mini(1971,'Artista','Canción',' ',1)}${mini(1988,'Artista','Canción',' ',3)}<div class="cb" style="border-color:var(--blue);box-shadow:0 0 14px #4da3ffaa"><img src="icon-192.png" alt=""></div>${mini(2009,'Artista','Canción',' ',5)}`],
  ['Acierto o fallo','Si aciertas, la carta se queda en tu línea con un ✓ verde. Si fallas, se gira en rojo con una ✕, se muestra su año y se descarta.',
