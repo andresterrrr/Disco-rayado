@@ -448,7 +448,7 @@ button.chip .dot{width:1.5rem;height:1.5rem;font-size:.7rem}
   <div id="ruNav"><button class="g" id="ruPrev">Anterior</button><div id="ruDots"></div><button id="ruNext">Siguiente</button></div></div></div>
 <div id="mYrs" class="modal fm"><div class="panel"><h2>Años modificados</h2><div class="sub">Correcciones que has hecho. Toca una para editarla o restaurarla.</div><div id="yrList"></div><div class="row"><button id="yrClose">Cerrar</button></div></div></div>
 <div id="mTips" class="modal fm"><div class="panel"><h2>Sugerencias</h2><div id="tipList"></div><div class="row"><button id="tipClose">Cerrar</button></div></div></div>
-<div id="mBak" class="modal fm"><div class="panel col" style="gap:.5rem"><h2>Copia de seguridad</h2><div class="sub">Guarda en un archivo tus playlists, años modificados, avatar e historial de canciones, y restáuralo cuando quieras (por ejemplo en otro móvil).</div><div class="sub" id="bakInfo"></div><input type="file" id="bakFile" accept=".json,application/json" style="display:none"><button id="bakSave">Guardar copia</button><button class="g" id="bakLoad">Restaurar copia</button><button class="g" id="bakClose">Cerrar</button></div></div>
+<div id="mBak" class="modal fm"><div class="panel col" style="gap:.5rem"><h2>Copia de seguridad</h2><div class="sub">Guarda en un archivo tus playlists, años modificados, avatar y la memoria de las últimas partidas, y restáuralo cuando quieras (por ejemplo en otro móvil).</div><div class="sub" id="bakInfo"></div><input type="file" id="bakFile" accept=".json,application/json" style="display:none"><button id="bakSave">Guardar copia</button><button class="g" id="bakLoad">Restaurar copia</button><button class="g" id="bakClose">Cerrar</button></div></div>
 <div id="mFix" class="modal"><div class="panel"><h2>Corregir años</h2><div class="sub">Toca una canción para cambiar su año. El cambio se recuerda en las próximas partidas; esta partida sigue como terminó.</div><div id="fixList"></div><div class="row"><button id="fxClose">Cerrar</button></div></div></div>
 <div id="mEdit" class="modal"><div class="panel"><h2 id="edT"></h2><div class="sub" id="edS"></div><input type="text" id="edY" inputmode="numeric" maxlength="4" autocomplete="off" style="margin:.5rem 0"><div class="sub bad" id="edE"></div><div class="row"><button class="g" id="edRes">Restaurar</button><button class="g" id="edNo">Cancelar</button><button id="edOk">Guardar</button></div></div></div>
 <div id="mRev" class="modal"><div class="panel col" style="gap:.5rem"><h2>Revancha</h2><button id="rvSame">Mismos jugadores y temas</button><div class="sub">Las canciones que no sonaron salen primero. Fichas a 0.</div><button class="g" id="rvChg">Cambiar aspectos</button><div class="sub">Vuelves a los nombres y luego a las canciones.</div><button class="g" id="rvNo">Cancelar</button></div></div>
@@ -545,6 +545,9 @@ let setup=jget('dr_setup',{names:[''],pls:[],prep:false});
 if(!Array.isArray(setup.names)||!setup.names.length)setup.names=[''];
 if(!Array.isArray(setup.pls))setup.pls=[];
 let mbCache=jget('dr_mb',{});      // clave -> año más antiguo (0 = sin datos)
+let recent=jget('dr_recent',[]);     // canciones de las últimas 3 partidas terminadas (la más reciente primero): [[clave,...],...]
+if(!Array.isArray(recent))recent=[];recent=recent.filter(Array.isArray).slice(0,3);
+try{localStorage.removeItem('dr_hist')}catch(e){}
 let fixes=jget('dr_fix',{});        // correcciones manuales: clave -> año
 const saveSetup=()=>store.set('dr_setup',JSON.stringify(setup));
 
@@ -762,7 +765,9 @@ function shuffle(a){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor
 function buildGame(heard){
   const names=pNames(),n=names.length,all=pool().map(t=>({...t,gi:Math.floor(Math.random()*GR.length)}));
   const yrs=all.map(t=>t.y);
-  const P=heard?shuffle(all.filter(t=>!heard.has(keyOf(t)))).concat(shuffle(all.filter(t=>heard.has(keyOf(t))))):shuffle(all);   // revancha: primero las que no sonaron
+  const age=t=>{const k=keyOf(t);if(heard&&heard.has(k))return 0;for(let i=0;i<recent.length;i++)if(recent[i].includes(k))return i;return -1};   // 0 = partida más reciente, -1 = no sonó en las últimas 3
+  const tiers=[-1,2,1,0].map(a=>shuffle(all.filter(t=>age(t)===a)));                // primero las que no sonaron; luego, por antigüedad: de la más antigua a la más reciente
+  const P=[].concat(...tiers);
   const initial=P.slice(0,n),rest=P.slice(n);
   const reserveN=3+((rest.length-3)%n);
   const reserve=rest.slice(0,reserveN),deck=rest.slice(reserveN);
@@ -1562,7 +1567,6 @@ function confirmBox(t,b,yes,infoOnly){
 // ================= Fase 5: menú del avatar =================
 let avatar=jget('dr_av',null);
 let fixm=jget('dr_fixm',{});           // datos legibles de las correcciones: clave -> {n,a}
-let hist=jget('dr_hist',{});           // historial de canciones jugadas: clave -> {n,a,c,l}
 const AVS=['🎧','🎸','🎤','🎹','🥁','🎷','🎺','🎻','💿','🕺','👾','🔥'];
 function renderAv(){
   document.querySelectorAll('.avb').forEach(b=>{
@@ -1659,7 +1663,7 @@ const TIPS=[
  ['Antes de jugar',['Abre Spotify en este móvil y deja que suene o pausa algo: así aparece como dispositivo.','Silencia los avisos: activa No molestar (o bloquea las notificaciones con Game Booster) para que no salga el título de la canción.','Pon la batería de Spotify en «Sin restricciones»: Ajustes → Aplicaciones → Spotify → Batería → Sin restricciones.','Instala Disco Rayado (opcional): menú de Chrome → Instalar aplicación, o Añadir a pantalla de inicio.']],
  ['Durante la partida',['Baja el brillo y activa el ahorro de batería si la partida va a ser larga.','Ajusta el volumen desde Spotify o los botones del móvil.','Desconecta el Bluetooth de coche o altavoz con pantalla: podrían mostrar el título de la canción.','Si sales de la app, la música se detiene y todo queda en pausa hasta que pulses «Continuar».']],
  ['Si algo falla',['Spotify cerrado: ábrelo y toca «Reintentar».','La canción no suena: toca el engranaje ⚙ y «Saltar canción» (solo aparece si el audio no avanza).','Sesión caducada: vuelve a conectar con Spotify; la partida se guarda y se retoma.']],
- ['Tus datos',['«Años modificados» muestra las correcciones de año que has hecho y te deja editarlas o restaurarlas.','«Copia de seguridad» guarda en un archivo tus playlists, años modificados, avatar e historial, y los restaura cuando quieras.']],
+ ['Tus datos',['«Años modificados» muestra las correcciones de año que has hecho y te deja editarlas o restaurarlas.','«Copia de seguridad» guarda en un archivo tus playlists, años modificados, avatar y la memoria de las últimas partidas, y los restaura cuando quieras.']],
 ];
 function openTips(){
   $('tipList').innerHTML=TIPS.map(s=>`<h2 style="margin-top:.6rem">${s[0]}</h2>${s[1].map(t=>`<div class="chk"><b>•</b><div class="sub" style="color:var(--text)">${t}</div></div>`).join('')}`).join('');
@@ -1702,7 +1706,7 @@ async function syncSpotify(){
   mbRun();
 }
 // ---- Copia de seguridad
-function backupData(){return{app:'disco-rayado',v:1,date:new Date().toISOString(),setup:{names:setup.names,pls:setup.pls,prep:setup.prep},fixes,fixm,mb:mbCache,avatar,hist}}
+function backupData(){return{app:'disco-rayado',v:1,date:new Date().toISOString(),setup:{names:setup.names,pls:setup.pls,prep:setup.prep},fixes,fixm,mb:mbCache,avatar,recent}}
 function saveBackup(){
   const blob=new Blob([JSON.stringify(backupData())],{type:'application/json'});
   const a=document.createElement('a');a.href=URL.createObjectURL(blob);
@@ -1713,9 +1717,9 @@ function saveBackup(){
 function restoreBackup(d){
   setup={names:Array.isArray(d.setup.names)&&d.setup.names.length?d.setup.names:[''],pls:Array.isArray(d.setup.pls)?d.setup.pls:[],prep:!!d.setup.prep};
   fixes=d.fixes&&typeof d.fixes==='object'?d.fixes:{};fixm=d.fixm&&typeof d.fixm==='object'?d.fixm:{};
-  mbCache=d.mb&&typeof d.mb==='object'?d.mb:{};avatar=d.avatar||null;hist=d.hist&&typeof d.hist==='object'?d.hist:{};
+  mbCache=d.mb&&typeof d.mb==='object'?d.mb:{};avatar=d.avatar||null;recent=Array.isArray(d.recent)?d.recent.filter(Array.isArray).slice(0,3):[];
   saveSetup();store.set('dr_fix',JSON.stringify(fixes));store.set('dr_fixm',JSON.stringify(fixm));store.set('dr_mb',JSON.stringify(mbCache));
-  store.set('dr_av',JSON.stringify(avatar));store.set('dr_hist',JSON.stringify(hist));
+  store.set('dr_av',JSON.stringify(avatar));store.set('dr_recent',JSON.stringify(recent));
   renderAv();renderPlayers();if(cur==='sMusic')renderMusic();
 }
 $('bakFile').onchange=e=>{
@@ -1724,14 +1728,13 @@ $('bakFile').onchange=e=>{
   rd.onload=()=>{
     let d=null;try{d=JSON.parse(rd.result)}catch(_){}
     if(!d||d.app!=='disco-rayado'||!d.setup){toast('Ese archivo no es una copia de Disco Rayado');return}
-    confirmBox('¿Restaurar esta copia?',`Se sustituyen tus playlists (${(d.setup.pls||[]).length}), años modificados (${Object.keys(d.fixes||{}).length}), avatar e historial por los de la copia.`,()=>{restoreBackup(d);$('mBak').classList.remove('on');toast('Copia restaurada')});
+    confirmBox('¿Restaurar esta copia?',`Se sustituyen tus playlists (${(d.setup.pls||[]).length}), años modificados (${Object.keys(d.fixes||{}).length}), avatar y memoria de las últimas partidas por los de la copia.`,()=>{restoreBackup(d);$('mBak').classList.remove('on');toast('Copia restaurada')});
   };
   rd.readAsText(f);e.target.value='';
 };
 function recordHist(){
-  const now=new Date().toISOString().slice(0,10);
-  gameSongs().forEach(c=>{const k=keyOf(c),h=hist[k]||{n:c.name,a:c.artist,c:0};h.c++;h.l=now;hist[k]=h});
-  store.set('dr_hist',JSON.stringify(hist));
+  recent.unshift(gameSongs().map(keyOf));recent=recent.slice(0,3);
+  store.set('dr_recent',JSON.stringify(recent));
 }
 // ---- eventos de los menús
 $('av1').onclick=openMenu;$('av2').onclick=openMenu;
@@ -1741,7 +1744,7 @@ $('mnRules').onclick=()=>{$('mMenu').classList.remove('on');openRules(0)};
 $('mnSync').onclick=syncSpotify;
 $('mnYrs').onclick=()=>{$('mMenu').classList.remove('on');openYrs()};
 $('mnTips').onclick=()=>{$('mMenu').classList.remove('on');openTips()};
-$('mnBak').onclick=()=>{$('mMenu').classList.remove('on');$('bakInfo').textContent=`Incluye ${setup.pls.length} playlist(s), ${Object.keys(fixes).length} año(s) modificado(s) y ${Object.keys(hist).length} canción(es) en el historial.`;$('mBak').classList.add('on')};
+$('mnBak').onclick=()=>{$('mMenu').classList.remove('on');$('bakInfo').textContent=`Incluye ${setup.pls.length} playlist(s), ${Object.keys(fixes).length} año(s) modificado(s) y la memoria de las últimas ${recent.length} partida(s).`;$('mBak').classList.add('on')};
 $('bakSave').onclick=saveBackup;
 $('bakLoad').onclick=()=>$('bakFile').click();
 $('bakClose').onclick=()=>$('mBak').classList.remove('on');
