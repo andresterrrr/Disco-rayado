@@ -1141,7 +1141,7 @@ async function resolveTurn(s,bets){
   const my=tTok;
   if(!await animateResult(t,okTurn,s,my,msg))return;
   if(g.winner!==null){await sleep(1400);if(my!==tTok)return;showEnd();return}
-  const box=$('resBtns');box.innerHTML='';
+  const box=$('resBtns');box.innerHTML='';box.style.transition='';box.style.opacity='';
   const mk=(txt,fn,cls)=>{const b=document.createElement('button');b.textContent=txt;if(cls)b.className=cls;b.onclick=fn;box.appendChild(b)};
   if(okTurn){
     let busy=false;
